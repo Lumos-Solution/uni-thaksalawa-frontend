@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { useState, useEffect } from "react";
+import HomePage from "./pages/HomePage.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import SignInPage from "./pages/SignInPage.jsx";
+import SignUpPage from "./pages/SignUpPage.jsx";
+import MyclassesPage from "./pages/MyClassesPage.jsx";
+import NavBar from "./components/NavBar.jsx";
+import MyEnrollmentsPage from "./pages/MyEnrollmentsPage.jsx";
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const [isLoggedIn, setIsLoggedIn] = useState(() => {
+        return localStorage.getItem("isLoggedIn") === "true";
+    });
+
+    useEffect(() => {
+        localStorage.setItem("isLoggedIn", isLoggedIn.toString());
+    }, [isLoggedIn]);
+
+    const ProtectedRoute = ({ children }) => {
+        return isLoggedIn ? children : <Navigate to="/login" />;
+    };
+
+    const UserLayout = () => (
+        <div>
+            <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+            <Outlet />
+        </div>
+    );
+
+    return (
+        <Router>
+            <Routes>
+                <Route element={<UserLayout />}>
+                    <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
+                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                    <Route path="/myClasses" element={<ProtectedRoute><MyclassesPage /></ProtectedRoute>} />
+                    <Route path="/myEnrollments" element={<ProtectedRoute><MyEnrollmentsPage /></ProtectedRoute>} />
+                </Route>
+
+                <Route path="/login" element={<SignInPage setIsLoggedIn={setIsLoggedIn} />} />
+                <Route path="/signUp" element={<SignUpPage />} />
+            </Routes>
+        </Router>
+    );
 }
 
-export default App
+export default App;
