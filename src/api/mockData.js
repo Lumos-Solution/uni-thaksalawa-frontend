@@ -14,7 +14,7 @@ export const mockClasses = [
     id: 'c102',
     title: 'Database Management',
     subject: 'DBMS',
-    teacher: 'Ms. Savandi',
+    teacher: 'Ms.Savandi',
     location: 'Galle',
     description: 'Understand the fundamentals of databases and how to manage them.',
     image: 'https://th.bing.com/th/id/R.fc96b429c172c54c3a24175b26f1f819?rik=NXgrXUYLOpvd%2bg&pid=ImgRaw&r=0',
