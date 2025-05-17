@@ -1,4 +1,4 @@
-export default class UserTution {
+export default class UserTuition {
   constructor(userID, classID, status = 'pending') {
     this.userID = userID;
     this.classID = classID;

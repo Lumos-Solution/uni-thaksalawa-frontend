@@ -1,12 +1,13 @@
-export default class Tution {
-  constructor(classID, title, subject, type, location, fee, time, date) {
+export default class Tuition {
+  constructor(classID,teacherID, title, subject, classType, location, fee,date,studentList) {
     this.classID = classID;
+    this.teacherID = teacherID;
     this.title = title;
     this.subject = subject;
-    this.type = type;     
+    this.classType = classType;// physical or online
     this.location = location;
-    this.fee = fee;
-    this.time = time;
-    this.date = date;
+    this.fee = fee;// class fee
+    this.date = date;// created date
+    this.studentList=studentList;// students who enrolled to the class
   }
 }
