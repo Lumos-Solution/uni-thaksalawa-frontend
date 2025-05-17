@@ -7,6 +7,7 @@ import chemistry from "../assets/Card/chemistry.jpg";
 function MyClassesPage() {
   return (
     <div className="my-classes-page">
+      
       <h2 className="text-2xl font-bold mb-4 page title" >My Classes</h2>
       <p>These are classes that you enrolled in and are currently studying</p>
       <p>Click on the button to view the class resources</p>
