@@ -7,6 +7,12 @@ function NavBar({ isLoggedIn }) {
                 <li>
                     <Link to="/" className="text-white hover:text-yellow-400">Home</Link>
                 </li>
+                <li>
+                    <Link to="/myClasses" className="text-white hover:text-yellow-400">My Classes</Link>
+                </li>
+                <li>
+                    <Link to="/myEnrollments" className="text-white hover:text-yellow-400">My Enrollments</Link>
+                 </li>
 
                 {!isLoggedIn ? (
                     <>
@@ -22,12 +28,7 @@ function NavBar({ isLoggedIn }) {
                         <li>
                             <Link to="/dashboard" className="text-white hover:text-yellow-400">Dashboard</Link>
                         </li>
-                        <li>
-                            <Link to="/myClasses" className="text-white hover:text-yellow-400">My Classes</Link>
-                        </li>
-                        <li>
-                            <Link to="/myEnrollments" className="text-white hover:text-yellow-400">My Enrollments</Link>
-                        </li>
+                        
                     </>
                 )}
             </ul>

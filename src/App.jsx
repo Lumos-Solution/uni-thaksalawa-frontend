@@ -35,7 +35,8 @@ function App() {
                 <Route element={<UserLayout />}>
                     <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
                     <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                    <Route path="/myClasses" element={<ProtectedRoute><MyclassesPage /></ProtectedRoute>} />
+                    <Route path="/myClasses" element={<MyclassesPage />} />
+
                     <Route path="/myEnrollments" element={<ProtectedRoute><MyEnrollmentsPage /></ProtectedRoute>} />
                 </Route>
 
