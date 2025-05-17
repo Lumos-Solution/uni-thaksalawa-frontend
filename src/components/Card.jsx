@@ -22,7 +22,7 @@ export const Card=(props)=>{
         </div>
       )}
 
-        <a href={props.link} className="card-link" onClick={(e) => e.stopPropagation()}>Learn More</a> 
+        <a href={props.link} className="card-link" onClick={(e) => e.stopPropagation()}>View Class</a> 
     </div>
     );
 
