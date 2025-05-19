@@ -1,12 +1,12 @@
-import "./Card.css"; // ✅ This will now work!
+import "./Card.css"; 
 
-import { useState } from "react"; // remember whether to show or not more
+import { useState } from "react";                                                                                                                // remember whether to show or not more
 
 
 export const Card=(props)=>{
-    const [showDetails, setShowDetails] = useState(false);  //Creates a piece of memory (state) and sets its first value to false showDetails=false
+    const [showDetails, setShowDetails] = useState(false);                                         //Creates a piece of memory (state) and sets its first value to false showDetails=false
     const handleCardClick = () => {
-    setShowDetails((prev) => !prev); // toggle true/false
+    setShowDetails((prev) => !prev);                                                              // toggle true/false
   };
     return( 
     <div className="card-container" onClick={handleCardClick}> 
@@ -14,7 +14,7 @@ export const Card=(props)=>{
         <h1 className="card-title">{props.title}</h1>
         <p className="card-text">{props.text}</p>
 
-        {showDetails && (  // if showDetails is true, srun below code
+        {showDetails && (                                                                        // if showDetails is true, srun below code
         <div className="card-details">
           <p>{props.date}</p>
           <p>{props.time}</p>
