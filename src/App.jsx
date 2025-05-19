@@ -40,7 +40,7 @@ function App() {
                     <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                     <Route path="/myClasses" element={<MyclassesPage />} />
 
-                    <Route path="/myEnrollments" element={<ProtectedRoute><MyEnrollmentsPage /></ProtectedRoute>} />
+                    <Route path="/myEnrollments" element={<MyEnrollmentsPage />} />
                     <Route path="/myEnrollments" element={<ProtectedRoute><MyEnrollmentsPage /></ProtectedRoute>} />
                     <Route path="/notifications" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
                     <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>} />
