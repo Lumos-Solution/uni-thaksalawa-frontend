@@ -28,7 +28,13 @@ function NavBar({ isLoggedIn }) {
                         <li>
                             <Link to="/dashboard" className="text-white hover:text-yellow-400">Dashboard</Link>
                         </li>
-                        
+                        <li>
+                            <Link to="/notifications" className="text-white hover:text-yellow-400">Notifications</Link>
+                        </li>
+                        <li>
+                            <Link to="/profile" className="text-white hover:text-yellow-400">Profile</Link>
+                        </li>
+
                     </>
                 )}
             </ul>

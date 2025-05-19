@@ -18,7 +18,7 @@ const SignInPage = ({ setIsLoggedIn }) => {
     e.preventDefault();
 
     // ✅ [START] TEMPORARY TEST LOGIN (REMOVE WHEN BACKEND IS READY)
-    if (formData.email === 'test@test.com' && formData.password === '123') {
+    if (formData.email === 'test@gmail.com' && formData.password === '123') {
       setIsLoggedIn(true);  // ⬅️ Allow dashboard access
       localStorage.setItem("isLoggedIn", "true"); // Optional: persist across refresh
       Swal.fire('Success!', 'Test login successful (no backend used)', 'success');

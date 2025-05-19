@@ -7,6 +7,8 @@ import SignUpPage from "./pages/SignUpPage.jsx";
 import MyclassesPage from "./pages/MyClassesPage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import MyEnrollmentsPage from "./pages/MyEnrollmentsPage.jsx";
+import NotificationPage from "./pages/NotificationPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 function App() {
 
@@ -32,12 +34,17 @@ function App() {
     return (
         <Router>
             <Routes>
+
                 <Route element={<UserLayout />}>
                     <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
                     <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                     <Route path="/myClasses" element={<MyclassesPage />} />
 
                     <Route path="/myEnrollments" element={<ProtectedRoute><MyEnrollmentsPage /></ProtectedRoute>} />
+                    <Route path="/myEnrollments" element={<ProtectedRoute><MyEnrollmentsPage /></ProtectedRoute>} />
+                    <Route path="/notifications" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
+                    <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>} />
+
                 </Route>
 
                 <Route path="/login" element={<SignInPage setIsLoggedIn={setIsLoggedIn} />} />
