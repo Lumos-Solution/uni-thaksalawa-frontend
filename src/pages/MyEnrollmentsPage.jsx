@@ -13,7 +13,7 @@ export default function MyEnrollmentsPage() {
             <br/>
 
             <div className="class-container">
-                
+
                 <Card
                 image={maths}
                 title="Math Class"
@@ -46,25 +46,6 @@ export default function MyEnrollmentsPage() {
 
       </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
-
-
-
-
-
-
     )
 }
