@@ -34,8 +34,7 @@ const SignupPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/api/signup', formData);
+    try {const response = await axios.post('http://localhost:3000/api/users/signup', formData);
 
       if (response.data.success) {
         Swal.fire('Success!', 'Signup successful', 'success');
