@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.logo {
+    font-weight: bold;
+    color: #003366;
+}
+
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+}
+
+.buttons .btn {
+    margin-left: 5px;
+    padding: 6px 12px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.logout {
+    background-color: red;
+    color: white;
+}
+
+.main {
+    padding: 30px 10px;
+    text-align: center;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+h1 {
+    margin-top: 10px;
+}
+
+.welcome {
+    color: #4b0082;
+}
+
+.dear {
+    color: #5a00b3;
+}
+
+.name {
+    color: #b0b0ff;
+}
+
+.subtext {
+    color: #777;
+}
+
+.form {
+    text-align: left;
+    margin-top: 30px;
+}
+
+.form label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.form input,
+.form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.submit {
+    margin-top: 10px;
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 15px;
+    background: #1d1d1d;
+    color: white;
+}
