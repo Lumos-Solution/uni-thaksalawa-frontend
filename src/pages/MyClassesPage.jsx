@@ -14,10 +14,9 @@ function MyClassesPage() {
     link: "",
     time: "",
     date: "",
-    teacher: ""
+    teacher: "",
+    image: null,
   });
-
-
 
   return (
     <div className="my-classes-page">
@@ -37,6 +36,7 @@ function MyClassesPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded shadow-lg w-96">
             <h3 className="text-lg font-bold mb-4">Add New Class</h3>
+
             <form
               onSubmit={(e) => {                                                                                                      //when u click submit button, run this function
                 e.preventDefault();                                                                                                   //e.preventDefault() stops the page from refreshing
@@ -60,6 +60,14 @@ function MyClassesPage() {
                 value={formData.grade}
                 onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
               />
+
+              <input
+                type="file"
+                accept="image/*"
+                className="w-full mb-2 p-2 border"
+                onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
+              />
+              
               <input
                 type="text"
                 placeholder="Link"
@@ -92,6 +100,7 @@ function MyClassesPage() {
                 <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Submit</button>
                 <button type="button" onClick={() => setShowModal(false)} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancel</button>
               </div>
+
             </form>
           </div>
         </div>
