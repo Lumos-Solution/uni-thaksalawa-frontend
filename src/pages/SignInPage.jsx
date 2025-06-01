@@ -1,85 +1,63 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
-const SignInPage = ({ setIsLoggedIn }) => {
+function Signin() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [form, setForm] = useState({ userName: '', password: '' });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // ✅ [START] TEMPORARY TEST LOGIN (REMOVE WHEN BACKEND IS READY)
-    if (formData.email === 'test@gmail.com' && formData.password === '123') {
-      setIsLoggedIn(true);  // ⬅️ Allow dashboard access
-      localStorage.setItem("isLoggedIn", "true"); // Optional: persist across refresh
-      Swal.fire('Success!', 'Test login successful (no backend used)', 'success');
-      navigate('/dashboard');
-      return;
-    }
-    // ✅ [END] TEMPORARY TEST LOGIN
-
     try {
-      const response = await axios.post('http://localhost:5000/api/login', formData);
-
-      if (response.data.success) {
-        setIsLoggedIn(true);
-        localStorage.setItem("isLoggedIn", "true");
-        Swal.fire('Success!', 'Login successful', 'success');
+      const res = await axios.post('http://localhost:3000/signin', form);
+      if (res.data.success) {
+        localStorage.setItem('username', form.userName);
+        Swal.fire('Welcome', 'Login Successful!', 'success');
         navigate('/dashboard');
       } else {
-        Swal.fire('Oops!', response.data.message || 'Login failed', 'error');
+        Swal.fire('Oops', 'Invalid username or password', 'error');
       }
     } catch (error) {
       console.error(error);
-      Swal.fire('Error!', 'Something went wrong during login', 'error');
+      Swal.fire('Error', 'Server Error', 'error');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign In</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4">Sign In</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            required
-          />
+        <input
+          type="text"
+          name="userName"
+          placeholder="Username"
+          value={form.userName}
+          onChange={handleChange}
+          className="w-full p-2 border mb-3 rounded"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          className="w-full p-2 border mb-3 rounded"
+          required
+        />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            required
-          />
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-          >
-            Sign In
-          </button>
-        </form>
-      </div>
+        <button type="submit" className="bg-green-500 text-white w-full py-2 rounded hover:bg-green-600">
+          Login
+        </button>
+      </form>
     </div>
   );
-};
+}
 
-export default SignInPage;
+export default Signin;
