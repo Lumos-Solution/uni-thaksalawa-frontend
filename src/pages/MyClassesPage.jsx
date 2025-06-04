@@ -144,3 +144,4 @@ function MyClassesPage() {
 }
 
 export default MyClassesPage;
+//modal,form, form label, add class btn, submit btn
