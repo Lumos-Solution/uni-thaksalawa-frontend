@@ -44,11 +44,11 @@ function MyClassesPage() {
                 console.log("Submitted class:", formData);   //whhy eeeeeeee
                 setShowModal(false);
               }}
-              className="grid grid-cols-3 gap-4 items-center">
+              className="grid grid-cols-[150px_1fr] gap-4 items-center">
 
 
-<div className="col-span-2 flex gap-4">
-                <label className="block font-semibold">Class Type:</label>
+  <label className="font-semibold">Class Type:</label>
+  <div className="flex gap-4">
                 <label className="mr-4">
                   <input
                     type="radio"
@@ -69,12 +69,12 @@ function MyClassesPage() {
                 </label>
                 </div>
 
-<div className="flex flex-col"></div>
+
               <label className="block font-semibold">Title:</label>
               <input
                 type="text"
                 placeholder="Enter title"
-                className="col-span-2 p-2 border rounded w-full"
+                className="p-2 border rounded w-full"
                 value={formData.title}                             //value={formData.title} shows the previous value for title . next line (onChange) updates the title when we type. 
                                                                    // So when we type letter by letter, the previous letters are shown in the input box because of value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })} //form data is a spread operator, which copies all the properties of formData 
@@ -87,7 +87,7 @@ function MyClassesPage() {
               <input
                 type="text"
                 placeholder="Enter Subject"
-                className="col-span-2 p-2 border rounded w-full"
+                className="p-2 border rounded w-full"
                 value={formData.grade}
                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
               />
@@ -95,7 +95,7 @@ function MyClassesPage() {
 
               <label className="block font-semibold">District (Location):</label>              
               <select
-                className="col-span-2 p-2 border rounded w-full"
+                className="p-2 border rounded w-full"
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}>
                 {["Colombo", "Gampaha", "Kalutara", "Kandy", "Matale", "Nuwara Eliya", "Galle", "Matara", "Hambantota", "Jaffna", "Kilinochchi", "Mannar", "Vavuniya", "Mullaitivu", "Batticaloa", "Ampara", "Trincomalee", "Kurunegala", "Puttalam", "Anuradhapura", "Polonnaruwa", "Badulla", "Monaragala", "Ratnapura", "Kegalle"].map((district) => (
@@ -107,7 +107,7 @@ function MyClassesPage() {
               <label className="block font-semibold">Date:</label>
               <input
                 type="date"
-                className="col-span-2 p-2 border rounded w-full"
+                className="p-2 border rounded w-full"
                 value={formData.date}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               />
@@ -117,7 +117,7 @@ function MyClassesPage() {
               <label className="block font-semibold">Time:</label>
               <input
                 type="time"
-                className="col-span-2 p-2 border rounded w-full"
+                className="p-2 border rounded w-full"
                 value={formData.time}
                 onChange={(e) => setFormData({ ...formData, time: e.target.value })}
               />
@@ -127,7 +127,7 @@ function MyClassesPage() {
               <input
                 type="number"
                 placeholder="Fee in Rs."
-                className="col-span-2 p-2 border rounded w-full"
+                className="p-2 border rounded w-full"
                 value={formData.fee}
                 onChange={(e) => setFormData({ ...formData, fee: e.target.value })}
               />
@@ -138,13 +138,14 @@ function MyClassesPage() {
               <input
                 type="file"
                 accept="image/*"
-                className="col-span-2 p-2 border rounded w-full"
+                className="p-2 border rounded w-full"
                 onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
               />
               
               <div className="flex justify-between mt-4">
-                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Submit</button>
                 <button type="button" onClick={() => setShowModal(false)} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancel</button>
+                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Submit</button>
+                
               </div>
 
             </form>
