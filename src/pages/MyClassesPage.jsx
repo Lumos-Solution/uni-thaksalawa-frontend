@@ -9,12 +9,13 @@ function MyClassesPage() {
 
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
+    classType: "physical",
     title: "",
-    grade: "",
-    link: "",
-    time: "",
+    subject: "",
+    location: "",
     date: "",
-    teacher: "",
+    time: "",
+    fee: "",
     image: null,
   });
 
@@ -34,7 +35,7 @@ function MyClassesPage() {
 
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded shadow-lg w-96">
+          <div className="bg-white p-6 rounded shadow-lg w-[550px]">
             <h3 className="text-lg font-bold mb-4">Add New Class</h3>
 
             <form
@@ -42,60 +43,105 @@ function MyClassesPage() {
                 e.preventDefault();                                                                                                   //e.preventDefault() stops the page from refreshing
                 console.log("Submitted class:", formData);   //whhy eeeeeeee
                 setShowModal(false);
-              }}>
+              }}
+              className="grid grid-cols-3 gap-4 items-center">
 
+
+<div className="col-span-2 flex gap-4">
+                <label className="block font-semibold">Class Type:</label>
+                <label className="mr-4">
+                  <input
+                    type="radio"
+                    name="classType"
+                    value="physical"
+                    checked={formData.classType === "physical"}
+                    onChange={(e) => setFormData({ ...formData, classType: e.target.value })}
+                  /> Physical
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="classType"
+                    value="online"
+                    checked={formData.classType === "online"}
+                    onChange={(e) => setFormData({ ...formData, classType: e.target.value })}
+                  /> Online
+                </label>
+                </div>
+
+<div className="flex flex-col"></div>
+              <label className="block font-semibold">Title:</label>
               <input
                 type="text"
-                placeholder="Title"
-                className="w-full mb-2 p-2 border"
+                placeholder="Enter title"
+                className="col-span-2 p-2 border rounded w-full"
                 value={formData.title}                             //value={formData.title} shows the previous value for title . next line (onChange) updates the title when we type. 
                                                                    // So when we type letter by letter, the previous letters are shown in the input box because of value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })} //form data is a spread operator, which copies all the properties of formData 
                                                                   // and then updates formData changing title which is taken by e.target.value(user typed value)
-              />                                   
+              />    
+
+
+
+              <label className="block font-semibold">Subject:</label>                               
               <input
                 type="text"
-                placeholder="Grade"
-                className="w-full mb-2 p-2 border"
+                placeholder="Enter Subject"
+                className="col-span-2 p-2 border rounded w-full"
                 value={formData.grade}
-                onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
               />
 
-              <input
-                type="file"
-                accept="image/*"
-                className="w-full mb-2 p-2 border"
-                onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
-              />
-              
-              <input
-                type="text"
-                placeholder="Link"
-                className="w-full mb-2 p-2 border"
-                value={formData.link}
-                onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="Time"
-                className="w-full mb-2 p-2 border"
-                value={formData.time}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              />
+
+              <label className="block font-semibold">District (Location):</label>              
+              <select
+                className="col-span-2 p-2 border rounded w-full"
+                value={formData.location}
+                onChange={(e) => setFormData({ ...formData, location: e.target.value })}>
+                {["Colombo", "Gampaha", "Kalutara", "Kandy", "Matale", "Nuwara Eliya", "Galle", "Matara", "Hambantota", "Jaffna", "Kilinochchi", "Mannar", "Vavuniya", "Mullaitivu", "Batticaloa", "Ampara", "Trincomalee", "Kurunegala", "Puttalam", "Anuradhapura", "Polonnaruwa", "Badulla", "Monaragala", "Ratnapura", "Kegalle"].map((district) => (
+                  <option key={district} value={district}>{district}</option>
+                ))}
+              </select>
+
+
+              <label className="block font-semibold">Date:</label>
               <input
                 type="date"
-                className="w-full mb-2 p-2 border"
+                className="col-span-2 p-2 border rounded w-full"
                 value={formData.date}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               />
+
+
+
+              <label className="block font-semibold">Time:</label>
               <input
-                type="text"
-                placeholder="Teacher"
-                className="w-full mb-2 p-2 border"
-                value={formData.teacher}
-                onChange={(e) => setFormData({ ...formData, teacher: e.target.value })}
+                type="time"
+                className="col-span-2 p-2 border rounded w-full"
+                value={formData.time}
+                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
               />
 
+
+              <label className="block font-semibold">Fee (Rs.):</label>
+              <input
+                type="number"
+                placeholder="Fee in Rs."
+                className="col-span-2 p-2 border rounded w-full"
+                value={formData.fee}
+                onChange={(e) => setFormData({ ...formData, fee: e.target.value })}
+              />
+
+
+
+              <label className="block font-semibold">Class Image:</label>
+              <input
+                type="file"
+                accept="image/*"
+                className="col-span-2 p-2 border rounded w-full"
+                onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
+              />
+              
               <div className="flex justify-between mt-4">
                 <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Submit</button>
                 <button type="button" onClick={() => setShowModal(false)} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancel</button>
