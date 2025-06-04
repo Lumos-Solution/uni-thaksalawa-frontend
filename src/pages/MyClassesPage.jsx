@@ -142,9 +142,9 @@ function MyClassesPage() {
                 onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
               />
               
-              <div className="flex justify-between mt-4">
-                <button type="button" onClick={() => setShowModal(false)} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">Cancel</button>
-                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Submit</button>
+              <div className="flex mt-4 w-full gap-8">
+                <button type="button" onClick={() => setShowModal(false)} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 flex-1">Cancel</button>
+                <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex-1">Submit</button>
                 
               </div>
 
