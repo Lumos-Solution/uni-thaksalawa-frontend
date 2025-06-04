@@ -14,9 +14,12 @@ function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3000/signin', form);
-      if (res.data.success) {
+      const res = await axios.post('http://localhost:3000/api/user/signin', form);
+      console.log("send");
+      console.log(res);
+      if (res.data.message==='success') {
         localStorage.setItem('username', form.userName);
+        localStorage.setItem('isLoggedIn', true);
         Swal.fire('Welcome', 'Login Successful!', 'success');
         navigate('/dashboard');
       } else {

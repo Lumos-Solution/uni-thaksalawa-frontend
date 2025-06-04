@@ -35,7 +35,7 @@ function Signup() {
     }
 
     try {
-      const res = await axios.post('http://localhost:3000/signup', formData, {
+      const res = await axios.post('http://localhost:3000/api/user/signup', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
@@ -151,9 +151,13 @@ function Signup() {
           className="w-full p-2 border mb-3 rounded"
           required
         >
+          afterAL' | 'undergraduate' | 'postgraduate' | 'other'
           <option value="">Select User Type</option>
-          <option value="student">Student</option>
-          <option value="teacher">Teacher</option>
+          <option value="afterAL">afterAL</option>
+          <option value="undergraduate">Undergraduate</option>
+          <option value="undergraduate">Undergraduate</option>
+          <option value="postgraduate">Postgraduate</option>
+          <option value="other">Other</option>
         </select>
 
         {/* Profile picture upload */}

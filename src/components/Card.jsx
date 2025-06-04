@@ -1,4 +1,4 @@
-import "./Card.css"; 
+import "../stylesheet/Card.css";
 import { useState } from "react";                                                                   // remember whether to show or not more
 
 export const Card=(props)=>{
