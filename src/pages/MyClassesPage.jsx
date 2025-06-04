@@ -7,7 +7,7 @@ import { useState } from "react";
 
 function MyClassesPage() {
 
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);//
   const [formData, setFormData] = useState({
     classType: "physical",
     title: "",
@@ -47,8 +47,8 @@ function MyClassesPage() {
               className="grid grid-cols-[150px_1fr] gap-4 items-center">
 
 
-  <label className="font-semibold">Class Type:</label>
-  <div className="flex gap-4">
+              <label className="font-semibold">Class Type:</label>
+              <div className="flex gap-4">
                 <label className="mr-4">
                   <input
                     type="radio"
@@ -67,8 +67,7 @@ function MyClassesPage() {
                     onChange={(e) => setFormData({ ...formData, classType: e.target.value })}
                   /> Online
                 </label>
-                </div>
-
+              </div>
 
               <label className="block font-semibold">Title:</label>
               <input
@@ -81,19 +80,16 @@ function MyClassesPage() {
                                                                   // and then updates formData changing title which is taken by e.target.value(user typed value)
               />    
 
-
-
               <label className="block font-semibold">Subject:</label>                               
               <input
                 type="text"
                 placeholder="Enter Subject"
                 className="p-2 border rounded w-full"
-                value={formData.grade}
+                value={formData.subject}
                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
               />
 
-
-              <label className="block font-semibold">District (Location):</label>              
+              <label className="block font-semibold">Location:</label>              
               <select
                 className="p-2 border rounded w-full"
                 value={formData.location}
@@ -103,7 +99,6 @@ function MyClassesPage() {
                 ))}
               </select>
 
-
               <label className="block font-semibold">Date:</label>
               <input
                 type="date"
@@ -111,8 +106,6 @@ function MyClassesPage() {
                 value={formData.date}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               />
-
-
 
               <label className="block font-semibold">Time:</label>
               <input
@@ -122,8 +115,7 @@ function MyClassesPage() {
                 onChange={(e) => setFormData({ ...formData, time: e.target.value })}
               />
 
-
-              <label className="block font-semibold">Fee (Rs.):</label>
+              <label className="block font-semibold">Fee:</label>
               <input
                 type="number"
                 placeholder="Fee in Rs."
@@ -131,8 +123,6 @@ function MyClassesPage() {
                 value={formData.fee}
                 onChange={(e) => setFormData({ ...formData, fee: e.target.value })}
               />
-
-
 
               <label className="block font-semibold">Class Image:</label>
               <input
@@ -145,7 +135,6 @@ function MyClassesPage() {
               <div className="flex mt-4 w-full gap-8">
                 <button type="button" onClick={() => setShowModal(false)} className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 flex-1">Cancel</button>
                 <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex-1">Submit</button>
-                
               </div>
 
             </form>
