@@ -10,3 +10,11 @@ export const fetchNotifications = async () => {
     const response = await api.get(`/api/user/getRequests/${username}`);
     return response.data;
 };
+
+export const transferStudent = async (studentUsername, classId) => {
+    const response = await api.put('/api/user/transferStudent', {
+        studentUsername,
+        classId
+    });
+    return response.data;
+};
