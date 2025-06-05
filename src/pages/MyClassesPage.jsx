@@ -7,7 +7,7 @@ import { useState } from "react";
 
 function MyClassesPage() {
 
-  const [showModal, setShowModal] = useState(false);//
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     classType: "physical",
     title: "",
@@ -19,7 +19,8 @@ function MyClassesPage() {
     image: null,
   });
 
-  return (
+  const [classes, setClasses] = useState([]);            //This creates a state called classes, which starts as an empty list. It's used to store classes user has created by setClasses().
+  return (  
     <div className="my-classes-page">
       
       <h2 className="text-2xl font-bold mb-4 page title" >My Classes</h2>
@@ -40,9 +41,21 @@ function MyClassesPage() {
 
             <form
               onSubmit={(e) => {                                                                                                      //when u click submit button, run this function
-                e.preventDefault();                                                                                                   //e.preventDefault() stops the page from refreshing
+                e.preventDefault();    //stop page from refreshing when submitting   
+                setClasses((prevClasses) => [...prevClasses, formData]); //Add the current formData to the 'classes' state
+                                                                                           
                 console.log("Submitted class:", formData);   //whhy eeeeeeee
-                setShowModal(false);
+                setShowModal(false);   // Close the modal after submitting
+                setFormData({    //Reset form back to empty after submitting
+                  classType: "physical",
+                  title: "",
+                  subject: "",
+                  location: "",
+                  date: "",
+                  time: "",
+                  fee: "",
+                  image: null,
+                });
               }}
               className="grid grid-cols-[150px_1fr] gap-4 items-center">
 
@@ -142,7 +155,24 @@ function MyClassesPage() {
         </div>
       )}
 
-      <div className="class-container">
+      <div className="class-container mt-6">
+        {classes.map((classItem, index) => (
+          <Card
+            key={index}
+            image={classItem.image ? URL.createObjectURL(classItem.image) : maths} // use uploaded image or default
+            title={classItem.title}
+            subject={classItem.subject}
+            location={classItem.location}
+            date={classItem.date}
+            time={classItem.time}
+            fee={classItem.fee}
+            link="#"
+          />
+        ))}
+      </div>
+
+
+      {/* <div className="class-container">
 
         <Card
           image={maths}
@@ -174,7 +204,7 @@ function MyClassesPage() {
           teacher={<span><strong>Teacher:</strong> Michael Brown</span>}
         />
 
-      </div>
+      </div> */}
     </div>
   );
 }
