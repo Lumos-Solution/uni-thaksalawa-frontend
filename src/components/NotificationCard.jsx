@@ -1,42 +1,33 @@
 import React from 'react';
 
-function NotificationCard({ index, subject, message, studentUsername, classId, onConsider }) {
+function NotificationCard({ index, classId, title, userName }) {
     return (
         <div className="bg-white shadow-md rounded-xl p-4 mb-5 w-full max-w-3xl mx-auto">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-                <div className="flex items-center gap-3 w-full md:w-auto">
-                    <span className="text-xl">🔔</span>
-                    <input
-                        type="text"
-                        value={index}
-                        readOnly
-                        className="border rounded px-2 py-1 w-full md:w-28 text-sm"
-                    />
-                    <input
-                        type="text"
-                        value={subject}
-                        readOnly
-                        className="border rounded px-2 py-1 w-full md:w-32 text-sm"
-                    />
+            <div className="flex items-start gap-4">
+                <div className="text-2xl">🔔</div>
+                <div className="flex-1">
+                    <div className="mb-2">
+                        <label className="block text-xs text-gray-500">Student Username</label>
+                        <p className="text-sm font-medium text-gray-800">{userName}</p>
+                    </div>
+                    <div className="mb-2">
+                        <label className="block text-xs text-gray-500">Class ID</label>
+                        <p className="text-sm font-medium text-gray-800">{classId}</p>
+                    </div>
+                    <div>
+                        <label className="block text-xs text-gray-500">Class Title</label>
+                        <p className="text-sm font-medium text-gray-800">{title}</p>
+                    </div>
                 </div>
-                <div className="flex gap-2 mt-2 md:mt-0">
+                <div className="flex flex-col gap-2">
                     <button className="bg-gray-300 hover:bg-gray-400 text-sm px-4 py-1 rounded">
                         Ignore
                     </button>
-                    <button
-                        onClick={() => onConsider(studentUsername, classId)}
-                        className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1 rounded"
-                    >
+                    <button className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1 rounded">
                         Consider
                     </button>
                 </div>
             </div>
-            <textarea
-                readOnly
-                value={message}
-                className="mt-3 w-full p-3 text-sm border rounded resize-none bg-gray-50"
-                rows={3}
-            />
         </div>
     );
 }

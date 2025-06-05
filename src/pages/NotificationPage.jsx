@@ -47,7 +47,6 @@ function NotificationPage() {
 
     return (
         <div style={{ padding: '20px' }}>
-            <h2 className="text-2xl font-bold mb-4">My Notifications</h2>
             {notifications.length === 0 ? (
                 <p>No notifications available.</p>
             ) : (
@@ -55,10 +54,9 @@ function NotificationPage() {
                     <NotificationCard
                         key={i}
                         index={i + 1}
-                        subject={note.subject}
-                        message={note.message}
-                        studentUsername={note.studentUsername}
-                        classId={note.classId}
+                        title={note.classInfo.title}
+                        userName={note.request.userName}
+                        classId={note.classInfo.classId}
                         onConsider={handleConsider}
                     />
                 ))
