@@ -28,10 +28,19 @@ function NotificationPage() {
 
     return (
         <div style={{ padding: '20px' }}>
-            <h2>My Notifications</h2>
-            {notifications.map((note, i) => (
-                <NotificationCard key={i} {...note} />
-            ))}
+
+            {notifications.map((note, i) => {
+                console.log(`Rendering notification ${i + 1}:`, note);
+                console.log(`Rendering notification ${i + 1}:`, note.request.classId);
+                return (
+                    <NotificationCard
+                        key={i}
+                        classId={note.classInfo.classId}
+                        title={note.classInfo.title}
+                        userName={note.request.userName}
+                    />
+                );
+            })}
         </div>
     );
 }
