@@ -1,116 +1,184 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
-const SignupPage = () => {
+function Signup() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
+  const [form, setForm] = useState({
+    userName: '',
     password: '',
+    name: '',
+    email: '',
+    contact: '',
+    location: '',
+    userType: '',
+    profilePic: null
   });
 
-  const [passwordStrength, setPasswordStrength] = useState('');
-
-  // 💡 Check password strength
-  const evaluatePassword = (password) => {
-    if (password.length < 6) return 'Weak';
-    if (password.match(/[a-z]/) && password.match(/[A-Z]/) && password.match(/\d/) && password.length >= 8) {
-      return 'Strong';
-    }
-    return 'Medium';
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-
-    if (name === 'password') {
-      setPasswordStrength(evaluatePassword(value));
-    }
+  const handleFileChange = (e) => {
+    setForm({ ...form, profilePic: e.target.files[0] });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {const response = await axios.post('http://localhost:3000/api/users/signup', formData);
 
-      if (response.data.success) {
-        Swal.fire('Success!', 'Signup successful', 'success');
-        navigate('/login');
+    // Create FormData for file upload
+    const formData = new FormData();
+    for (let key in form) {
+      formData.append(key, form[key]);
+    }
+
+    try {
+      const res = await axios.post('http://localhost:3000/api/user/signup', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
+      if (res.data.success) {
+        Swal.fire('Success', 'Registration Successful!', 'success');
+        navigate('/signin');
       } else {
-        Swal.fire('Oops!', response.data.message || 'Signup failed', 'error');
+        Swal.fire('Error', 'Registration failed!', 'error');
       }
     } catch (error) {
       console.error(error);
-      Swal.fire('Error!', 'Something went wrong during signup', 'error');
+      Swal.fire('Error', 'Server Error!', 'error');
     }
   };
 
-  // 🎨 Color based on strength
-  const getStrengthColor = () => {
-    if (passwordStrength === 'Strong') return 'text-green-600';
-    if (passwordStrength === 'Medium') return 'text-yellow-600';
-    return 'text-red-600';
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded shadow-md w-full max-w-md"
+        encType="multipart/form-data"
+      >
         <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Username */}
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            value={formData.username}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            required
-          />
+        {/* Text fields */}
+        <input
+          type="text"
+          name="userName"
+          placeholder="Username"
+          value={form.userName}
+          onChange={handleChange}
+          className="w-full p-2 border mb-3 rounded"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          className="w-full p-2 border mb-3 rounded"
+          required
+        />
+        <input
+          type="text"
+          name="name"
+          placeholder="Full Name"
+          value={form.name}
+          onChange={handleChange}
+          className="w-full p-2 border mb-3 rounded"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          className="w-full p-2 border mb-3 rounded"
+          required
+        />
+        <input
+          type="text"
+          name="contact"
+          placeholder="Contact Number"
+          value={form.contact}
+          onChange={handleChange}
+          className="w-full p-2 border mb-3 rounded"
+          required
+        />
 
-          {/* Email */}
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            required
-          />
+        {/* Location dropdown */}
+        <select
+          name="location"
+          value={form.location}
+          onChange={handleChange}
+          className="w-full p-2 border mb-3 rounded"
+          required
+        >
+          <option value="">Select Location</option>
+          <option>Ampara</option>
+          <option>Anuradhapura</option>
+          <option>Badulla</option>
+          <option>Batticaloa</option>
+          <option>Colombo</option>
+          <option>Galle</option>
+          <option>Gampaha</option>
+          <option>Hambantota</option>
+          <option>Jaffna</option>
+          <option>Kalutara</option>
+          <option>Kandy</option>
+          <option>Kegalle</option>
+          <option>Kilinochchi</option>
+          <option>Kurunegala</option>
+          <option>Mannar</option>
+          <option>Matale</option>
+          <option>Matara</option>
+          <option>Monaragala</option>
+          <option>Mullaitivu</option>
+          <option>Nuwara Eliya</option>
+          <option>Polonnaruwa</option>
+          <option>Puttalam</option>
+          <option>Ratnapura</option>
+          <option>Trincomalee</option>
+          <option>Vavuniya</option>
+        </select>
 
-          {/* Password */}
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full border p-2 rounded"
-            required
-          />
-          {/* Password strength display */}
-          {formData.password && (
-            <p className={`text-sm font-semibold ${getStrengthColor()}`}>
-              Strength: {passwordStrength}
-            </p>
-          )}
+        {/* User type dropdown */}
+        <select
+          name="userType"
+          value={form.userType}
+          onChange={handleChange}
+          className="w-full p-2 border mb-3 rounded"
+          required
+        >
+          afterAL' | 'undergraduate' | 'postgraduate' | 'other'
+          <option value="">Select User Type</option>
+          <option value="afterAL">afterAL</option>
+          <option value="undergraduate">Undergraduate</option>
+          <option value="undergraduate">Undergraduate</option>
+          <option value="postgraduate">Postgraduate</option>
+          <option value="other">Other</option>
+        </select>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-          >
-            Sign Up
-          </button>
-        </form>
-      </div>
+        {/* Profile picture upload */}
+        <input
+          type="file"
+          accept="image/*"
+          name="profilePic"
+          onChange={handleFileChange}
+          className="w-full p-2 border mb-4 rounded"
+          required
+        />
+
+        <button
+          type="submit"
+          className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700 transition"
+        >
+          Register
+        </button>
+      </form>
     </div>
   );
-};
+}
 
-export default SignupPage;
+export default Signup;
