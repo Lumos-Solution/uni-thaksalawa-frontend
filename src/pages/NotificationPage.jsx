@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NotificationCard from '../components/NotificationCard';
+import { fetchNotifications } from '../services/notificationService';
 
 function NotificationPage() {
-    const notifications = [
-        {
-            index: '2023001',
-            subject: 'CS101',
-            message: 'You missed the assignment submission deadline. Contact your lecturer.'
-        },
-        {
-            index: '2023002',
-            subject: 'MA201',
-            message: 'Mid-term marks have been uploaded to the LMS.'
-        },
-        {
-            index: '2023003',
-            subject: 'EN105',
-            message: 'New Zoom class scheduled for next Monday at 8 AM.'
-        }
-    ];
+    const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const loadNotifications = async () => {
+            try {
+                const data = await fetchNotifications();
+                setNotifications(data);
+            } catch (err) {
+                setError('Failed to load notifications');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadNotifications();
+    }, []);
+
+    if (loading) return <div style={{ padding: '20px' }}>Loading notifications...</div>;
+    if (error) return <div style={{ padding: '20px' }}>{error}</div>;
 
     return (
         <div style={{ padding: '20px' }}>
