@@ -11,10 +11,9 @@ export const fetchNotifications = async () => {
     return response.data;
 };
 
-// ✅ Update this function to use the correct URL
-export const transferStudent = async (studentUsername, classId) => {
+export const transferStudent = async (userName, classId) => {
     const response = await api.put('/api/userClassDetails/update', {
-        studentUsername,
+        userName,
         classId
     });
     return response.data;

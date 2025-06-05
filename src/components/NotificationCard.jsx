@@ -1,6 +1,36 @@
 import React from 'react';
+import {transferStudent} from "../service/NotificationService.js";
 
-function NotificationCard({ index, classId, title, userName }) {
+
+function NotificationCard({ index, classId, title, userName,setNotifications, notifications }) {
+
+    async function considerRequest() {
+        console.log("consider");
+        try {
+            const result = await transferStudent(userName, classId);
+
+            if (result.message === 'success') {
+                alert('Student transferred successfully.');
+
+                setNotifications(prev =>
+                    prev.filter(
+                        note =>
+                            !(
+                                note.request.userName === userName &&
+                                note.classInfo.classId === classId
+                            )
+                    )
+                );
+            } else {
+                alert('Transfer failed.');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error during transfer.');
+        }
+    }
+
+
     return (
         <div className="bg-white shadow-md rounded-xl p-4 mb-5 w-full max-w-3xl mx-auto">
             <div className="flex items-start gap-4">
@@ -23,7 +53,7 @@ function NotificationCard({ index, classId, title, userName }) {
                     <button className="bg-gray-300 hover:bg-gray-400 text-sm px-4 py-1 rounded">
                         Ignore
                     </button>
-                    <button className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1 rounded">
+                    <button onClick={considerRequest} className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1 rounded">
                         Consider
                     </button>
                 </div>

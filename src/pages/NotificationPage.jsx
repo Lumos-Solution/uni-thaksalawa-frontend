@@ -23,28 +23,6 @@ function NotificationPage() {
         loadNotifications();
     }, []);
 
-    const handleConsider = async (studentUsername, classId) => {
-        try {
-            const result = await transferStudent(studentUsername, classId);
-            if (result.success || result.status === 'ok') {
-                alert('Student transferred successfully.');
-                setNotifications(prev =>
-                    prev.filter(
-                        note =>
-                            !(
-                                note.userName === studentUsername &&
-                                note.classId === classId
-                            )
-                    )
-                );
-            } else {
-                alert('Transfer failed.');
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Error during transfer.');
-        }
-    };
 
     if (loading) return <div className="p-5">Loading notifications...</div>;
     if (error) return <div className="p-5 text-red-500">{error}</div>;
@@ -59,10 +37,11 @@ function NotificationPage() {
                     <NotificationCard
                         key={i}
                         index={i + 1}
-                        classId={note.classId}
-                        title={note.title}
-                        userName={note.userName}
-                        onConsider={handleConsider}
+                        classId={note.classInfo.classId}
+                        title={note.classInfo.title}
+                        userName={note.request.userName}
+                        setNotifications={setNotifications}
+                        notifications={notifications}
                     />
                 ))
             )}
