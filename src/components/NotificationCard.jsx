@@ -1,6 +1,6 @@
 import React from 'react';
 
-function NotificationCard({ index, subject, message, studentUsername, classId, onConsider }) {
+function NotificationCard({ index, subject, message }) {
     return (
         <div className="bg-white shadow-md rounded-xl p-4 mb-5 w-full max-w-3xl mx-auto">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
@@ -23,10 +23,7 @@ function NotificationCard({ index, subject, message, studentUsername, classId, o
                     <button className="bg-gray-300 hover:bg-gray-400 text-sm px-4 py-1 rounded">
                         Ignore
                     </button>
-                    <button
-                        onClick={() => onConsider(studentUsername, classId)}
-                        className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1 rounded"
-                    >
+                    <button className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1 rounded">
                         Consider
                     </button>
                 </div>
