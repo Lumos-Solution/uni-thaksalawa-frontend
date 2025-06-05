@@ -7,6 +7,6 @@ export const fetchNotifications = async () => {
     if (!username) {
         throw new Error('User not logged in');
     }
-    const response = await api.get(`/api/user/getRequest/${username}`);
+    const response = await api.get(`/api/user/getRequests/${username}`);
     return response.data;
 };
