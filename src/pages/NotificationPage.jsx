@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import NotificationCard from '../components/NotificationCard';
-import { fetchNotifications } from '../services/notificationService';
+import { fetchNotifications } from '../service/NotificationService';
 
 function NotificationPage() {
     const [notifications, setNotifications] = useState([]);

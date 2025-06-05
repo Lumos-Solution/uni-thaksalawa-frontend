@@ -35,12 +35,12 @@ export default function ProfilePage() {
             {/* Header */}
             <header className="flex justify-between items-center px-6 py-4 bg-blue-600 text-white shadow-md">
                 <div className="text-xl font-bold">Uniක්සලාව</div>
-                <nav className="space-x-4 hidden sm:block">
+                !--<nav className="space-x-4 hidden sm:block">
                     <a href="#" className="hover:underline">Home</a>
                     <a href="#" className="hover:underline">About</a>
                     <a href="#" className="hover:underline">Subjects</a>
                     <a href="#" className="hover:underline">Contact</a>
-                </nav>
+                </nav>--
                 <div className="space-x-2">
                     <button className="bg-white text-blue-600 px-4 py-1 rounded hover:bg-blue-100">Log In</button>
                     <button className="bg-white text-blue-600 px-4 py-1 rounded hover:bg-blue-100">Sign Up</button>
