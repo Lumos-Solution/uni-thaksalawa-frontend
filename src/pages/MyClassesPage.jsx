@@ -162,6 +162,7 @@ function MyClassesPage() {
             image={classItem.image ? URL.createObjectURL(classItem.image) : maths} // use uploaded image or default
             title={classItem.title}
             subject={classItem.subject}
+            classType={classItem.classType}
             location={classItem.location}
             date={classItem.date}
             time={classItem.time}

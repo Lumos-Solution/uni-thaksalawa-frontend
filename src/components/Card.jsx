@@ -17,6 +17,9 @@ export const Card=(props)=>{
         alt="Class"
         className="w-full h-48 object-cover rounded-md mb-4"
       />
+      <p className="text-xs font-semibold text-purple-600 uppercase mb-1">
+        {props.classType} Class
+      </p>
       <h1 className="text-xl font-bold text-gray-800 mb-2">{props.title}</h1>
       <p className="text-gray-600 mb-2">{props.subject}</p>
 
