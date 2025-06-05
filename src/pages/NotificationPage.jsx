@@ -26,37 +26,42 @@ function NotificationPage() {
     const handleConsider = async (studentUsername, classId) => {
         try {
             const result = await transferStudent(studentUsername, classId);
-            if (result.success) {
-                alert('Transfer successful!');
+            if (result.success || result.status === 'ok') {
+                alert('Student transferred successfully.');
                 setNotifications(prev =>
                     prev.filter(
-                        note => !(note.studentUsername === studentUsername && note.classId === classId)
+                        note =>
+                            !(
+                                note.userName === studentUsername &&
+                                note.classId === classId
+                            )
                     )
                 );
             } else {
                 alert('Transfer failed.');
             }
-        } catch (error) {
-            console.error('Transfer error:', error);
+        } catch (err) {
+            console.error(err);
             alert('Error during transfer.');
         }
     };
 
-    if (loading) return <div style={{ padding: '20px' }}>Loading notifications...</div>;
-    if (error) return <div style={{ padding: '20px' }}>{error}</div>;
+    if (loading) return <div className="p-5">Loading notifications...</div>;
+    if (error) return <div className="p-5 text-red-500">{error}</div>;
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div className="p-5">
+            <h2 className="text-2xl font-bold mb-4">My Notifications</h2>
             {notifications.length === 0 ? (
-                <p>No notifications available.</p>
+                <p>No notifications found.</p>
             ) : (
                 notifications.map((note, i) => (
                     <NotificationCard
                         key={i}
                         index={i + 1}
-                        title={note.classInfo.title}
-                        userName={note.request.userName}
-                        classId={note.classInfo.classId}
+                        classId={note.classId}
+                        title={note.title}
+                        userName={note.userName}
                         onConsider={handleConsider}
                     />
                 ))
