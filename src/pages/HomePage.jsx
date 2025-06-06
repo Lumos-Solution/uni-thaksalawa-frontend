@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { mockClasses } from '../api/mockData'; // Import mock data
+import { mockClasses } from '../api/mockData';
 import ClassCard from '../components/ClassCard';
 
 const HomePage = () => {
@@ -10,11 +10,10 @@ const HomePage = () => {
   const [titleFilter, setTitleFilter] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
   const [userLocation, setUserLocation] = useState(null);
-  const [showIntro, setShowIntro] = useState(true); // Controls the visibility of the intro section
-  const [showClasses, setShowClasses] = useState(false); // Controls the visibility of class listings after button click
+  const [showIntro, setShowIntro] = useState(true);
+  const [showClasses, setShowClasses] = useState(false);
 
   useEffect(() => {
-    // Get user's location using Geolocation API
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         setUserLocation({
@@ -28,7 +27,6 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    // Filter classes based on applied filters
     let filtered = classes;
 
     if (subjectFilter) {
@@ -52,7 +50,6 @@ const HomePage = () => {
       );
     }
 
-    // Sort classes by distance from user's location
     if (userLocation) {
       filtered = filtered.sort((a, b) => {
         const distanceA = getDistance(userLocation, a.location);
@@ -66,10 +63,10 @@ const HomePage = () => {
 
   const getDistance = (userLocation, classLocation) => {
     const [userLat, userLon] = [userLocation.latitude, userLocation.longitude];
-    const classCoords = getCoordinatesForLocation(classLocation); // Implement this function to fetch lat/lon for class location
+    const classCoords = getCoordinatesForLocation(classLocation);
     const [classLat, classLon] = classCoords;
 
-    const R = 6371; // Radius of Earth in km
+    const R = 6371;
     const dLat = toRad(classLat - userLat);
     const dLon = toRad(classLon - userLon);
     const a =
@@ -77,83 +74,98 @@ const HomePage = () => {
       Math.cos(toRad(userLat)) * Math.cos(toRad(classLat)) *
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    return R * c; // Distance in kilometers
+    return R * c;
   };
 
-  const toRad = (value) => {
-    return value * (Math.PI / 180);
-  };
+  const toRad = (value) => value * (Math.PI / 180);
 
   const getCoordinatesForLocation = (location) => {
-    // For simplicity, use hardcoded coordinates (you can replace this with a geocoding API later)
     const locationCoordinates = {
       'Moratuwa': [6.9869, 79.9985],
       'Galle': [6.0535, 80.2200],
       'Ratnapura': [6.4345, 80.3937],
       'Kurunagala': [7.4675, 80.3684],
     };
-    return locationCoordinates[location] || [0, 0]; // Default to [0, 0] if location is not found
+    return locationCoordinates[location] || [0, 0];
   };
 
-  const handleEnroll = (classId) => {
-    console.log(`Enroll request sent for class ${classId}`);
-    // Call API to enroll the user in class (PUT request)
+  const handleEnroll = async (classData) => {
+    const userName = localStorage.getItem("username") || "GuestUser";
+    const dataToSend = {
+      userName: userName,
+      ClassId: classData.id,
+      IsJoined: true,
+    };
+
+    try {
+      const response = await fetch("https://your-backend-api.com/enroll", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (response.ok) {
+        alert("✅ Enrolled successfully!");
+      } else {
+        alert("❌ Enrollment failed.");
+      }
+    } catch (error) {
+      console.error("Error enrolling:", error);
+      alert("❌ Something went wrong.");
+    }
   };
 
   const handleFindTutorClick = () => {
-    setShowIntro(false);  // Hide the intro section when the button is clicked
-    setShowClasses(true); // Show the class listings
+    setShowIntro(false);
+    setShowClasses(true);
   };
 
   return (
     <div className="container mx-auto p-4">
-      {/* Hero Section with Button */}
       {showIntro && (
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Find Your Tutor</h1>
-          <p className="text-lg mb-6">
-            Find the best tutors in any subject at your convenience. Choose from a variety of experienced teachers.
-          </p>
-          <button
-            onClick={handleFindTutorClick}
-            className="bg-blue-500 text-white py-3 px-8 rounded-full text-2xl hover:bg-blue-600 transition"
-          >
-            Find Your Tutor
-          </button>
-        </div>
-      )}
+        <>
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold mb-4">Find Your Tutor</h1>
+            <p className="text-lg mb-6">
+              Find the best tutors in any subject at your convenience. Choose from a variety of experienced teachers.
+            </p>
+            <button
+              onClick={handleFindTutorClick}
+              className="bg-blue-500 text-white py-3 px-8 rounded-full text-2xl hover:bg-blue-600 transition"
+            >
+              Find Your Tutor
+            </button>
+          </div>
 
-      {/* Why Choose Us Section */}
-      {showIntro && (
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold mb-4">Why Choose Uni Thaksalawa?</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="p-6 bg-blue-100 rounded-lg shadow-lg hover:shadow-xl transition">
-              <h3 className="text-2xl font-semibold mb-3">Best Teachers</h3>
-              <p className="text-lg">Top-rated, qualified tutors ready to help you succeed.</p>
-              <img src="https://th.bing.com/th/id/OIP.2Ecc2kJaDoiau98cs8wETgHaE8?cb=iwc2&rs=1&pid=ImgDetMain" alt="teacher" />
-            </div>
-            <div className="p-6 bg-blue-100 rounded-lg shadow-lg hover:shadow-xl transition">
-              <h3 className="text-2xl font-semibold mb-3">Any Subject</h3>
-              <p className="text-lg">From Math to Languages, we have tutors for every subject!</p>
-              <img src="https://th.bing.com/th/id/OIP.9sCiEYWxpuhY5wsIW7lNAQHaHa?cb=iwc2&rs=1&pid=ImgDetMain" alt="sub image" />
-            </div>
-            <div className="p-6 bg-blue-100 rounded-lg shadow-lg hover:shadow-xl transition">
-              <h3 className="text-2xl font-semibold mb-3">Easy</h3>
-              <p className="text-lg">Book a tutor with just a few clicks and start learning!</p>
-              <img src="https://th.bing.com/th/id/OIP.zOiuj5M6kYytp1a2_4jXkgHaHa?cb=iwc2&rs=1&pid=ImgDetMain" alt="easy" />
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-semibold mb-4">Why Choose Uni Thaksalawa?</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="p-6 bg-blue-100 rounded-lg shadow-lg hover:shadow-xl transition">
+                <h3 className="text-2xl font-semibold mb-3">Best Teachers</h3>
+                <p className="text-lg">Top-rated, qualified tutors ready to help you succeed.</p>
+                <img src="https://th.bing.com/th/id/OIP.2Ecc2kJaDoiau98cs8wETgHaE8?cb=iwc2&rs=1&pid=ImgDetMain" alt="teacher" />
+              </div>
+              <div className="p-6 bg-blue-100 rounded-lg shadow-lg hover:shadow-xl transition">
+                <h3 className="text-2xl font-semibold mb-3">Any Subject</h3>
+                <p className="text-lg">From Math to Languages, we have tutors for every subject!</p>
+                <img src="https://th.bing.com/th/id/OIP.9sCiEYWxpuhY5wsIW7lNAQHaHa?cb=iwc2&rs=1&pid=ImgDetMain" alt="subject" />
+              </div>
+              <div className="p-6 bg-blue-100 rounded-lg shadow-lg hover:shadow-xl transition">
+                <h3 className="text-2xl font-semibold mb-3">Easy</h3>
+                <p className="text-lg">Book a tutor with just a few clicks and start learning!</p>
+                <img src="https://th.bing.com/th/id/OIP.zOiuj5M6kYytp1a2_4jXkgHaHa?cb=iwc2&rs=1&pid=ImgDetMain" alt="easy" />
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
 
-      {/* Filters and Class Listings */}
       {showClasses && (
         <div>
-          {/* Filters */}
           <div className="mb-6">
-            <div className="flex gap-4 justify-center mb-6">
+            <div className="flex gap-4 justify-center mb-6 flex-wrap">
               <input
                 type="text"
                 placeholder="Filter by subject"
@@ -184,7 +196,6 @@ const HomePage = () => {
               />
             </div>
 
-            {/* Display filtered and sorted classes */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredClasses.length > 0 ? (
                 filteredClasses.map((cls) => (
