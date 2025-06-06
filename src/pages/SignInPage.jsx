@@ -20,7 +20,7 @@ function Signin() {
       if (res.data.message==='success') {
         localStorage.setItem('username', form.userName);
         localStorage.setItem('isLoggedIn', true);
-        Swal.fire('Welcome', 'Login Successful!', 'success');
+       // Swal.fire('Welcome', 'Login Successful!', 'success');
         navigate('/dashboard');
       } else {
         Swal.fire('Oops', 'Invalid username or password', 'error');

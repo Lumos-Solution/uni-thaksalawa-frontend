@@ -103,6 +103,11 @@ export default function ProfilePage({ onLogout }) {
         fileInputRef.current?.click();
         setShowPhotoMenu(false);
     };
+    const handleLogout = () => {
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("username");
+
+    };
     const closeModal = () => setShowViewModal(false);
 
     const imageUrl =
@@ -242,7 +247,7 @@ export default function ProfilePage({ onLogout }) {
                         You can safely log out from here.
                     </p>
                     <button
-                        onClick={onLogout}
+                        onClick={handleLogout}
                         className="inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold rounded-md text-white bg-red-600 hover:bg-red-700"
                     >
                         <FiLogOut className="w-6 h-6" /> Logout
