@@ -3,6 +3,8 @@ import maths from "../assets/Card/maths.jpg";
 import physics from "../assets/Card/physics.jpg";
 import chemistry from "../assets/Card/chemistry.jpg"; 
 import { useState } from "react";  
+import searchIcon from "../assets/search.png";
+
 
 
 function MyClassesPage() {
@@ -23,16 +25,34 @@ function MyClassesPage() {
   return (  
     <div className="my-classes-page">
       
-      <h2 className="text-2xl font-bold mb-4 page title" >My Classes</h2>
-      <p>These are classes that you added and are currently teaching</p>
-      <p>Click on the button to view and add class resources</p>
-      <br/>
+{/* Header row: My Classes title + Add Class button */}
+<div className="flex justify-between items-center mb-4">
+  <h2 className="text-2xl font-bold text-center w-full">My Classes</h2>
+  <div className="absolute right-6">
+    <button
+      onClick={() => setShowModal(true)}
+      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+    >
+      Add Class
+    </button>
+  </div>
+</div>
 
-      <button
-        onClick={() => setShowModal(true)}                                                                                              //when button clicked, set showModal to true
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-        Add Class
-      </button>
+<div className="flex justify-center mb-6">
+  <div className="relative">
+    <img
+      src={searchIcon}
+      alt="search"
+      className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 opacity-50"
+    />
+    <input
+      type="text"
+      placeholder="Search here..."
+      className="p-2 pl-10 border border-gray-300 rounded w-[300px]"
+    />
+  </div>
+</div>
+
 
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
