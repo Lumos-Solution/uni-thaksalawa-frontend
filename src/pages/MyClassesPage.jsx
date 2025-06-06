@@ -2,6 +2,8 @@ import { Card } from "../components/Card.jsx";
 import maths from "../assets/Card/maths.jpg";
 import physics from "../assets/Card/physics.jpg";
 import chemistry from "../assets/Card/chemistry.jpg"; 
+import { addClass } from "../service/MyClassService"; 
+
 import { useState } from "react";  
 import searchIcon from "../assets/search.png";
 
@@ -60,23 +62,56 @@ function MyClassesPage() {
             <h3 className="text-lg font-bold mb-4">Add New Class</h3>
 
             <form
-              onSubmit={(e) => {                                                                                                      //when u click submit button, run this function
-                e.preventDefault();    //stop page from refreshing when submitting   
-                setClasses((prevClasses) => [...prevClasses, formData]); //Add the current formData to the 'classes' state
+              // onSubmit={(e) => {                                                                                                      //when u click submit button, run this function
+              //   e.preventDefault();    //stop page from refreshing when submitting   
+              //   setClasses((prevClasses) => [...prevClasses, formData]); //Add the current formData to the 'classes' state
                                                                                            
-                console.log("Submitted class:", formData);   //whhy eeeeeeee
-                setShowModal(false);   // Close the modal after submitting
-                setFormData({    //Reset form back to empty after submitting
-                  classType: "physical",
-                  title: "",
-                  subject: "",
-                  location: "",
-                  date: "",
-                  time: "",
-                  fee: "",
-                  image: null,
-                });
-              }}
+              //   console.log("Submitted class:", formData);   //whhy eeeeeeee
+              //   setShowModal(false);   // Close the modal after submitting
+                
+                
+                
+              //   setFormData({    //Reset form back to empty after submitting
+              //     classType: "physical",
+              //     title: "",
+              //     subject: "",
+              //     location: "",
+              //     date: "",
+              //     time: "",
+              //     fee: "",
+              //     image: null,
+              //   });
+              // }}
+
+          onSubmit={async (e) => {
+          e.preventDefault();
+
+          try {
+            // Call backend API using service
+            const addedClass = await addClass(formData);  // this sends data to backend
+
+            // Add the newly returned class to the state (to show on UI)
+            setClasses((prevClasses) => [...prevClasses, addedClass]);
+
+            // Reset modal and form
+            setShowModal(false);
+            setFormData({
+              classType: "physical",
+              title: "",
+              subject: "",
+              location: "",
+              date: "",
+              time: "",
+              fee: "",
+              image: null,
+            });
+          } catch (error) {
+            alert("Failed to add class. Check the console for details.");
+            console.error("Error submitting class:", error);
+          }
+        }}
+
+
               className="grid grid-cols-[150px_1fr] gap-4 items-center">
 
 
