@@ -1,33 +1,15 @@
-import axios from 'axios';
+// src/services/MyClassService.js
+import axios from "axios";
 
-const BASE_URL = 'http://localhost:3000/api/classes';
+const BASE_URL = "http://localhost:3000/api/classes";
 
-export const addClass = async (formData) => {
+// Function to get enrolled classes for a given username
+export const getEnrolledClassesByUsername = async (username) => {
   try {
-    const data = new FormData();
-
-    // Append all fields to FormData
-    data.append('classType', formData.classType);
-    data.append('title', formData.title);
-    data.append('subject', formData.subject);
-    data.append('location', formData.location);
-    data.append('date', formData.date);
-    data.append('time', formData.time);
-    data.append('fee', formData.fee);
-    
-    if (formData.image) {
-      data.append('image', formData.image);
-    }
-
-    const response = await axios.post(`${BASE_URL}/add`, data, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
-    return response.data;
+    const response = await axios.get(`${BASE_URL}/enrolled/${username}`);
+    return response.data; // assuming this returns an array of classes
   } catch (error) {
-    console.error('Error adding class:', error);
+    console.error("Failed to fetch enrolled classes:", error);
     throw error;
   }
 };
