@@ -9,7 +9,6 @@ export default function ProfilePage({ onLogout }) {
         const [formData, setFormData] = useState({
             name: "",
             email: "",
-            address: "",
             location: "",
             contact: "",
             password: "",
@@ -35,7 +34,6 @@ export default function ProfilePage({ onLogout }) {
                 setFormData({
                     name: data.name || "",
                     email: data.email || "",
-                    address: data.address || "",
                     location: data.location || "",
                     contact: data.contact || "",
                     password: "",
@@ -68,13 +66,17 @@ export default function ProfilePage({ onLogout }) {
             setFormData((prev) => ({
                 ...prev,
                 profilePic: URL.createObjectURL(file),
-                profilePicFile: file, // ✅ Save the actual file here
+                profilePicFile: file,
             }));
         }
         setShowPhotoMenu(false);
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) return;
+
         try {
             setLoading(true);
 
@@ -94,6 +96,41 @@ export default function ProfilePage({ onLogout }) {
         } finally {
             setLoading(false);
         }
+    };
+
+
+    const validateForm = () => {
+        const { name, email, contact, location,password, confirmPassword, type } = formData;
+
+        if (!name || !email || !contact || !location || !type) {
+            alert("Please fill in all required fields.");
+            return false;
+        }
+
+        const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+
+        const phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test(contact)) {
+            alert("Contact number must be 10 digits.");
+            return false;
+        }
+
+        if (password && password.length < 6) {
+            alert("Password must be at least 6 characters long.");
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            setPasswordError("Passwords do not match.");
+            return false;
+        }
+
+        return true;
     };
 
     const onProfilePicClick = () => setShowPhotoMenu(!showPhotoMenu);
@@ -172,7 +209,7 @@ export default function ProfilePage({ onLogout }) {
                     <div className="bg-white rounded-xl shadow p-6 space-y-6">
                         <h3 className="text-lg font-bold">Edit Profile</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            {["name", "email", "contact", "location", "address"].map(
+                            {["name", "email", "contact", "location"].map(
                                 (field) => (
                                     <div key={field}>
                                         <label className="block text-sm font-medium capitalize">
