@@ -48,3 +48,15 @@ export const updateUser = async (userName, data) => {
         throw new Error(error.response?.data?.message || "Failed to update user");
     }
 };
+
+export const deleteUser = async () => {
+   const username= localStorage.getItem("username");
+
+    const response = await fetch(`http://localhost:3000/api/user/delete/${username}`, {
+        method: "DELETE",
+    });
+    if (!response.ok) {
+        throw new Error("Failed to delete account");
+    }
+    return response.json();
+};

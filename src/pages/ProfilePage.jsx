@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { FiLogOut, FiUserX } from "react-icons/fi";
-import { fetchCurrentUser, updateUser } from "../service/userService";
+import {deleteUser, fetchCurrentUser, updateUser} from "../service/userService";
 import {useNavigate} from "react-router-dom";
+
 
 
 export default function ProfilePage({ onLogout }) {
@@ -15,7 +16,7 @@ export default function ProfilePage({ onLogout }) {
             confirmPassword: "",
             type: "",
             profilePic: "",
-            profilePicFile: null, // ✅ Add this
+            profilePicFile: null,
             userName: "",
 
     });
@@ -150,6 +151,26 @@ export default function ProfilePage({ onLogout }) {
             navigate("/login");
         }
     }
+
+    function onDelete() {
+        if (
+            window.confirm(
+                "Are you sure you want to delete your account? This action cannot be undone."
+            )
+        ) {
+            deleteUser()
+                .then(() => {
+                    alert("Account deleted successfully.");
+                    localStorage.removeItem("isLoggedIn");
+                    localStorage.removeItem("username");
+                    navigate("/login");
+                })
+                .catch((error) => {
+                    alert("Error deleting account: " + error.message);
+                });
+        }
+    }
+
     const closeModal = () => setShowViewModal(false);
 
     const imageUrl =
@@ -305,16 +326,7 @@ export default function ProfilePage({ onLogout }) {
                     </p>
                     <button
                         type="button"
-                        onClick={() => {
-                            if (
-                                window.confirm(
-                                    "Are you sure you want to delete your account? This action cannot be undone."
-                                )
-                            ) {
-                                alert("Account deleted (simulate API call).");
-                                onLogout();
-                            }
-                        }}
+                        onClick={onDelete}
                         className="inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold rounded-md text-white bg-red-800 hover:bg-red-900"
                     >
                         <FiUserX className="w-6 h-6" /> Delete Account
