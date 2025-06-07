@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { FiLogOut, FiUserX } from "react-icons/fi";
 import { fetchCurrentUser, updateUser } from "../service/userService";
+import {useNavigate} from "react-router-dom";
+
 
 export default function ProfilePage({ onLogout }) {
-
+    const navigate = useNavigate();
         const [formData, setFormData] = useState({
             name: "",
             email: "",
@@ -104,10 +106,13 @@ export default function ProfilePage({ onLogout }) {
         setShowPhotoMenu(false);
     };
     const handleLogout = () => {
-        localStorage.removeItem("isLoggedIn");
-        localStorage.removeItem("username");
-
-    };
+        const confirmLogout = window.confirm("Do you want to log out?");
+        if (confirmLogout) {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("username");
+            navigate("/login");
+        }
+    }
     const closeModal = () => setShowViewModal(false);
 
     const imageUrl =
