@@ -3,7 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
-export default function SignIn({setIsLoggedIn}) {
+function Signin() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ userName: '', password: '' });
 
@@ -18,14 +18,10 @@ export default function SignIn({setIsLoggedIn}) {
       console.log("send");
       console.log(res);
       if (res.data.message==='success') {
-     /*   localStorage.setItem('username', form.userName);
-        localStorage.setItem('isLoggedIn', true);*/
-       // Swal.fire('Welcome', 'Login Successful!', 'success');
         localStorage.setItem('username', form.userName);
-        localStorage.setItem('isLoggedIn', 'true');
-        setIsLoggedIn("true");
+        localStorage.setItem('isLoggedIn', true);
+       // Swal.fire('Welcome', 'Login Successful!', 'success');
         navigate('/dashboard');
-
       } else {
         Swal.fire('Oops', 'Invalid username or password', 'error');
       }
@@ -67,4 +63,4 @@ export default function SignIn({setIsLoggedIn}) {
   );
 }
 
-
+export default Signin;
