@@ -1,4 +1,4 @@
-iimport axios from 'axios';
+import axios from 'axios';
 
 // Create a reusable axios instance
 const api = axios.create({ baseURL: 'http://localhost:3000' });
