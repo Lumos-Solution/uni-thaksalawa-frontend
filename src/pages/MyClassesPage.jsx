@@ -2,6 +2,8 @@ import {Card} from "../components/Card.jsx";
 import maths from "../assets/Card/maths.jpg";
 import {useState} from "react";
 import searchIcon from "../assets/search.png";
+import {addClass} from "../service/MyClassService.js";
+
 
 
 function MyClassesPage() {
@@ -81,29 +83,29 @@ function MyClassesPage() {
                                 e.preventDefault();
 
                                 try {
-                                    // Call backend API using service
-                                    //const addedClass = await addClass(formData);  // this sends data to backend
+                                    const username = localStorage.getItem("username");
+                                    const addedClass = await addClass(formData, username);
 
-                                    // Add the newly returned class to the state (to show on UI)
                                     setClasses((prevClasses) => [...prevClasses, addedClass]);
 
                                     // Reset modal and form
                                     setShowModal(false);
                                     setFormData({
-                                        classType: "physical",
-                                        title: "",
-                                        subject: "",
-                                        location: "",
-                                        date: "",
-                                        time: "",
-                                        fee: "",
-                                        image: null,
+                                    classType: "physical",
+                                    title: "",
+                                    subject: "",
+                                    location: "",
+                                    date: "",
+                                    time: "",
+                                    fee: "",
+                                    image: null,
                                     });
                                 } catch (error) {
                                     alert("Failed to add class. Check the console for details.");
                                     console.error("Error submitting class:", error);
                                 }
                             }}
+
 
 
                             className="grid grid-cols-[150px_1fr] gap-4 items-center">
