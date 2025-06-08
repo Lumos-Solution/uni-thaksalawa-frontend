@@ -39,9 +39,9 @@ function Signup() {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      if (res.data.success) {
+      if (res.data.message==='success') {
         Swal.fire('Success', 'Registration Successful!', 'success');
-        navigate('/signin');
+        navigate('/login');
       } else {
         Swal.fire('Error', 'Registration failed!', 'error');
       }
