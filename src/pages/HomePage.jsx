@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { fetchClasses } from '../API/ClassApi';
 import ClassCard from '../components/ClassCard';
+import axios from "axios";
+
 
 const HomePage = () => {
+
   const [classes, setClasses] = useState([]);
   const [filteredClasses, setFilteredClasses] = useState([]);
   const [subjectFilter, setSubjectFilter] = useState('');
@@ -13,7 +16,6 @@ const HomePage = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showClasses, setShowClasses] = useState(false);
 
-  // Fetch class data from backend
   useEffect(() => {
     const loadClasses = async () => {
       try {
@@ -25,8 +27,6 @@ const HomePage = () => {
     };
     loadClasses();
   }, []);
-
-  // Get user's current location
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -40,7 +40,6 @@ const HomePage = () => {
     }
   }, []);
 
-  // Filtering classes
   useEffect(() => {
     let filtered = classes;
 
@@ -108,20 +107,14 @@ const HomePage = () => {
     const userName = localStorage.getItem("username");
     const dataToSend = {
       userName: userName,
-      classId: classData.id,
+      classId: classData.classId,
       isJoined: false,
     };
 
     try {
-      const response = await fetch("https://localhost:3000/api/userClassDetails/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      });
+      const response = await axios.post("http://localhost:3000/api/userClassDetails/add", dataToSend);
 
-      if (response.ok) {
+      if (response.status === 200 || response.status === 201) {
         alert("✅ Enrolled successfully!");
       } else {
         alert("❌ Enrollment failed.");
@@ -214,7 +207,7 @@ const HomePage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredClasses.length > 0 ? (
                 filteredClasses.map((cls) => (
-                  <ClassCard key={cls.id} classData={cls} onEnroll={handleEnroll} />
+                  <ClassCard key={cls.classId} classData={cls} onEnroll={handleEnroll} />
                 ))
               ) : (
                 <p>No classes available matching your filters.</p>
