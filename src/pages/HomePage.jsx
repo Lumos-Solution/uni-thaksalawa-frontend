@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { mockClasses } from '../api/mockData';
+import { fetchClasses } from '../API/ClassApi';
 import ClassCard from '../components/ClassCard';
 
 const HomePage = () => {
-  const [classes, setClasses] = useState(mockClasses);
+  const [classes, setClasses] = useState([]);
   const [filteredClasses, setFilteredClasses] = useState([]);
   const [subjectFilter, setSubjectFilter] = useState('');
   const [teacherFilter, setTeacherFilter] = useState('');
@@ -13,6 +13,20 @@ const HomePage = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showClasses, setShowClasses] = useState(false);
 
+  // Fetch class data from backend
+  useEffect(() => {
+    const loadClasses = async () => {
+      try {
+        const data = await fetchClasses();
+        setClasses(data);
+      } catch (error) {
+        console.error("Error fetching classes:", error);
+      }
+    };
+    loadClasses();
+  }, []);
+
+  // Get user's current location
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -26,6 +40,7 @@ const HomePage = () => {
     }
   }, []);
 
+  // Filtering classes
   useEffect(() => {
     let filtered = classes;
 
@@ -59,7 +74,7 @@ const HomePage = () => {
     }
 
     setFilteredClasses(filtered);
-  }, [subjectFilter, teacherFilter, titleFilter, locationFilter, userLocation, showClasses]);
+  }, [subjectFilter, teacherFilter, titleFilter, locationFilter, userLocation, showClasses, classes]);
 
   const getDistance = (userLocation, classLocation) => {
     const [userLat, userLon] = [userLocation.latitude, userLocation.longitude];
@@ -90,7 +105,7 @@ const HomePage = () => {
   };
 
   const handleEnroll = async (classData) => {
-    const userName = localStorage.getItem("username") ;
+    const userName = localStorage.getItem("username");
     const dataToSend = {
       userName: userName,
       classId: classData.id,
