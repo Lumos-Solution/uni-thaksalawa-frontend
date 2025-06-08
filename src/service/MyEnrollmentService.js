@@ -1,11 +1,11 @@
 // src/services/MyClassService.js
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3000/api/classes';
+const api = axios.create({baseURL:"http://localhost:3000/api"});
 
 export const getEnrolledClassesByUsername = async (username) => {
   try {
-    const response = await axios.get(`${BASE_URL}/getClasses/${username}`);
+    const response = await api.get(`user/getEnrollments/${username}`);
     return response.data; // should be an array of class objects
   } catch (error) {
     console.error('Error fetching enrolled classes:', error);
