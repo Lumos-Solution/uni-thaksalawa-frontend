@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Signup() {
   const navigate = useNavigate();
@@ -28,7 +28,6 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Create FormData for file upload
     const formData = new FormData();
     for (let key in form) {
       formData.append(key, form[key]);
@@ -151,10 +150,8 @@ function Signup() {
           className="w-full p-2 border mb-3 rounded"
           required
         >
-          afterAL' | 'undergraduate' | 'postgraduate' | 'other'
           <option value="">Select User Type</option>
           <option value="afterAL">afterAL</option>
-          <option value="undergraduate">Undergraduate</option>
           <option value="undergraduate">Undergraduate</option>
           <option value="postgraduate">Postgraduate</option>
           <option value="other">Other</option>
@@ -176,6 +173,13 @@ function Signup() {
         >
           Register
         </button>
+
+        <p className="mt-4 text-center text-sm">
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Login
+          </Link>
+        </p>
       </form>
     </div>
   );
