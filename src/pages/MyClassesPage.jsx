@@ -17,7 +17,7 @@ function MyClassesPage() {
         date: "",
         time: "",
         fee: "",
-        image: null,
+        classImage: null,
     });
 
     const [classes, setClasses] = useState([]);            //This creates a state called classes, which starts as an empty list. It's used to store classes user has created by setClasses().
@@ -196,7 +196,7 @@ function MyClassesPage() {
                                 type="file"
                                 accept="image/*"
                                 className="p-2 border rounded w-full"
-                                onChange={(e) => setFormData({...formData, image: e.target.files[0]})}
+                                onChange={(e) => setFormData({...formData, classImage: e.target.files[0]})}
                             />
 
                             <div className="flex mt-4 w-full gap-8">
@@ -217,7 +217,7 @@ function MyClassesPage() {
                 {classes.map((classItem, index) => (
                     <Card
                         key={index}
-                        image={classItem.image ? URL.createObjectURL(classItem.image) : maths} // use uploaded image or default
+                        image={classItem.classImage ? URL.createObjectURL(classItem.classImage) : maths} // use uploaded image or default
                         title={classItem.title}
                         subject={classItem.subject}
                         classType={classItem.classType}
