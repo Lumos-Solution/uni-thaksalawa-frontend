@@ -1,23 +1,22 @@
-import { useState, useRef, useEffect } from "react";
-import { FiLogOut, FiUserX } from "react-icons/fi";
+import {useState, useRef, useEffect} from "react";
+import {FiLogOut, FiUserX} from "react-icons/fi";
 import {deleteUser, fetchCurrentUser, updateUser} from "../service/userService";
 import {useNavigate} from "react-router-dom";
 
 
-
-export default function ProfilePage({ onLogout }) {
+export default function ProfilePage() {
     const navigate = useNavigate();
-        const [formData, setFormData] = useState({
-            name: "",
-            email: "",
-            location: "",
-            contact: "",
-            password: "",
-            confirmPassword: "",
-            type: "",
-            profilePic: "",
-            profilePicFile: null,
-            userName: "",
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        location: "",
+        contact: "",
+        password: "",
+        confirmPassword: "",
+        type: "",
+        profilePic: "",
+        profilePicFile: null,
+        userName: "",
 
     });
 
@@ -54,8 +53,8 @@ export default function ProfilePage({ onLogout }) {
     }, []);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        const {name, value} = e.target;
+        setFormData((prev) => ({...prev, [name]: value}));
         if (name === "password" || name === "confirmPassword") {
             setPasswordError("");
         }
@@ -101,7 +100,7 @@ export default function ProfilePage({ onLogout }) {
 
 
     const validateForm = () => {
-        const { name, email, contact, location,password, confirmPassword, type } = formData;
+        const {name, email, contact, location, password, confirmPassword, type} = formData;
 
         if (!name || !email || !contact || !location || !type) {
             alert("Please fill in all required fields.");
@@ -192,7 +191,8 @@ export default function ProfilePage({ onLogout }) {
                             onClick={onProfilePicClick}
                         />
                         {showPhotoMenu && (
-                            <div className="absolute top-28 left-28 bg-white shadow-lg rounded-md border border-gray-300 z-10 w-40">
+                            <div
+                                className="absolute top-28 left-28 bg-white shadow-lg rounded-md border border-gray-300 z-10 w-40">
                                 <button
                                     type="button"
                                     onClick={onViewPhoto}
@@ -313,7 +313,7 @@ export default function ProfilePage({ onLogout }) {
                         onClick={handleLogout}
                         className="inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold rounded-md text-white bg-red-600 hover:bg-red-700"
                     >
-                        <FiLogOut className="w-6 h-6" /> Logout
+                        <FiLogOut className="w-6 h-6"/> Logout
                     </button>
                 </div>
 
@@ -329,7 +329,7 @@ export default function ProfilePage({ onLogout }) {
                         onClick={onDelete}
                         className="inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold rounded-md text-white bg-red-800 hover:bg-red-900"
                     >
-                        <FiUserX className="w-6 h-6" /> Delete Account
+                        <FiUserX className="w-6 h-6"/> Delete Account
                     </button>
                 </div>
 
