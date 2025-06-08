@@ -90,15 +90,15 @@ const HomePage = () => {
   };
 
   const handleEnroll = async (classData) => {
-    const userName = localStorage.getItem("username") || "GuestUser";
+    const userName = localStorage.getItem("username") ;
     const dataToSend = {
       userName: userName,
-      ClassId: classData.id,
-      IsJoined: true,
+      classId: classData.id,
+      isJoined: false,
     };
 
     try {
-      const response = await fetch("https://your-backend-api.com/enroll", {
+      const response = await fetch("https://localhost:3000/api/userClassDetails/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
