@@ -1,4 +1,4 @@
-import {mockClasses } from './mockData';
+import { mockClasses } from './mockData';
 import axios from "axios";
 const api = axios.create({baseURL:"http://localhost:3000/api"});
 // Function to get all classes
@@ -11,6 +11,6 @@ export const getAllClasses = () => {
 };
 
 export const fetchClasses = async () => {
-  const response = await api.get(`/classes/getAll`);
+  const response = await api.get(`/class/getAll`);
   return response.data;
 };

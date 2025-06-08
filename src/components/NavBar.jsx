@@ -67,7 +67,7 @@ function NavBar() {
                         </Link>
                     </li>
 
-                    {!isLoggedIn ? (
+                    {!isLoggedIn? (
                         <>
                             <li>
                                 <Link
