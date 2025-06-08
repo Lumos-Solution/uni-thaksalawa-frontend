@@ -1,17 +1,15 @@
+
+// src/components/NotificationCard.jsx
 import React from 'react';
-import {transferStudent} from "../service/NotificationService.js";
+import { transferStudent, deleteNotification } from "../service/NotificationService.js";
 
-
-function NotificationCard({ index, classId, title, userName,setNotifications, notifications }) {
+function NotificationCard({ index, classId, title, userName, setNotifications, notifications }) {
 
     async function considerRequest() {
-        console.log("consider");
         try {
             const result = await transferStudent(userName, classId);
-
             if (result.message === 'success') {
                 alert('Student transferred successfully.');
-
                 setNotifications(prev =>
                     prev.filter(
                         note =>
@@ -30,6 +28,31 @@ function NotificationCard({ index, classId, title, userName,setNotifications, no
         }
     }
 
+    async function handleDelete() {
+        const confirmed = window.confirm(`Delete request for ${userName} in class ${classId}?`);
+        if (!confirmed) return;
+
+        try {
+            const result = await deleteNotification(userName, classId);
+            if (result.message === 'success') {
+                alert('Data is deleted.');
+                setNotifications(prev =>
+                    prev.filter(
+                        note =>
+                            !(
+                                note.request.userName === userName &&
+                                note.classInfo.classId === classId
+                            )
+                    )
+                );
+            } else {
+                alert('Deletion failed.');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error during deletion.');
+        }
+    }
 
     return (
         <div className="bg-white shadow-md rounded-xl p-4 mb-5 w-full max-w-3xl mx-auto">
@@ -55,6 +78,9 @@ function NotificationCard({ index, classId, title, userName,setNotifications, no
                     </button>
                     <button onClick={considerRequest} className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1 rounded">
                         Consider
+                    </button>
+                    <button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1 rounded">
+                        Delete
                     </button>
                 </div>
             </div>
