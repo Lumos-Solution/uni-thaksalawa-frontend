@@ -1,8 +1,7 @@
-import {useState, useRef, useEffect} from "react";
-import {FiLogOut, FiUserX} from "react-icons/fi";
-import {deleteUser, fetchCurrentUser, updateUser} from "../service/userService";
-import {useNavigate} from "react-router-dom";
-
+import { useState, useRef, useEffect } from "react";
+import { FiLogOut, FiUserX } from "react-icons/fi";
+import { deleteUser, fetchCurrentUser, updateUser } from "../service/userService";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
@@ -17,7 +16,6 @@ export default function ProfilePage() {
         profilePic: "",
         profilePicFile: null,
         userName: "",
-
     });
 
     const [passwordError, setPasswordError] = useState("");
@@ -53,8 +51,8 @@ export default function ProfilePage() {
     }, []);
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData((prev) => ({...prev, [name]: value}));
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
         if (name === "password" || name === "confirmPassword") {
             setPasswordError("");
         }
@@ -74,12 +72,10 @@ export default function ProfilePage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!validateForm()) return;
 
         try {
             setLoading(true);
-
             await updateUser(formData.userName, {
                 name: formData.name,
                 email: formData.email,
@@ -89,7 +85,6 @@ export default function ProfilePage() {
                 password: formData.password ? formData.password : undefined,
                 profilePicFile: formData.profilePicFile,
             });
-
             alert("Profile updated successfully");
         } catch (error) {
             alert(error.message);
@@ -98,9 +93,8 @@ export default function ProfilePage() {
         }
     };
 
-
     const validateForm = () => {
-        const {name, email, contact, location, password, confirmPassword, type} = formData;
+        const { name, email, contact, location, password, confirmPassword, type } = formData;
 
         if (!name || !email || !contact || !location || !type) {
             alert("Please fill in all required fields.");
@@ -108,7 +102,6 @@ export default function ProfilePage() {
         }
 
         const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-
         if (!emailRegex.test(email)) {
             alert("Please enter a valid email address.");
             return false;
@@ -142,6 +135,7 @@ export default function ProfilePage() {
         fileInputRef.current?.click();
         setShowPhotoMenu(false);
     };
+
     const handleLogout = () => {
         const confirmLogout = window.confirm("Do you want to log out?");
         if (confirmLogout) {
@@ -149,9 +143,9 @@ export default function ProfilePage() {
             localStorage.removeItem("username");
             navigate("/login");
         }
-    }
+    };
 
-    function onDelete() {
+    const onDelete = () => {
         if (
             window.confirm(
                 "Are you sure you want to delete your account? This action cannot be undone."
@@ -168,7 +162,7 @@ export default function ProfilePage() {
                     alert("Error deleting account: " + error.message);
                 });
         }
-    }
+    };
 
     const closeModal = () => setShowViewModal(false);
 
@@ -182,7 +176,6 @@ export default function ProfilePage() {
         <div className="min-h-screen bg-gray-100 flex mt-10">
             <div className="flex-1 p-10 space-y-10">
                 <form onSubmit={handleSubmit} className="space-y-10">
-
                     <div className="bg-white rounded-xl shadow p-6 flex items-center gap-6 relative">
                         <img
                             src={imageUrl}
@@ -191,8 +184,7 @@ export default function ProfilePage() {
                             onClick={onProfilePicClick}
                         />
                         {showPhotoMenu && (
-                            <div
-                                className="absolute top-28 left-28 bg-white shadow-lg rounded-md border border-gray-300 z-10 w-40">
+                            <div className="absolute top-28 left-28 bg-white shadow-lg rounded-md border border-gray-300 z-10 w-40">
                                 <button
                                     type="button"
                                     onClick={onViewPhoto}
@@ -226,26 +218,23 @@ export default function ProfilePage() {
                         />
                     </div>
 
-
                     <div className="bg-white rounded-xl shadow p-6 space-y-6">
                         <h3 className="text-lg font-bold">Edit Profile</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            {["name", "email", "contact", "location"].map(
-                                (field) => (
-                                    <div key={field}>
-                                        <label className="block text-sm font-medium capitalize">
-                                            {field}
-                                        </label>
-                                        <input
-                                            type={field === "email" ? "email" : "text"}
-                                            name={field}
-                                            value={formData[field] ?? ""}
-                                            onChange={handleChange}
-                                            className="mt-1 w-full px-3 py-2 border rounded-md"
-                                        />
-                                    </div>
-                                )
-                            )}
+                            {["name", "email", "contact", "location"].map((field) => (
+                                <div key={field}>
+                                    <label className="block text-sm font-medium capitalize">
+                                        {field}
+                                    </label>
+                                    <input
+                                        type={field === "email" ? "email" : "text"}
+                                        name={field}
+                                        value={formData[field] ?? ""}
+                                        onChange={handleChange}
+                                        className="mt-1 w-full px-3 py-2 border rounded-md"
+                                    />
+                                </div>
+                            ))}
                             <div>
                                 <label className="block text-sm font-medium">User Type</label>
                                 <select
@@ -272,9 +261,7 @@ export default function ProfilePage() {
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium">
-                                    Confirm Password
-                                </label>
+                                <label className="block text-sm font-medium">Confirm Password</label>
                                 <input
                                     type="password"
                                     name="confirmPassword"
@@ -297,42 +284,35 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-
                     <div className="bg-white rounded-xl shadow p-6 space-y-6">
                         <h3 className="text-lg font-bold">Theme Settings</h3>
                         <p className="text-gray-600">Theme customization will be available soon...</p>
                     </div>
                 </form>
 
-
                 <div className="bg-white rounded-xl shadow p-6 text-center">
-                    <p className="mb-4 text-gray-700 text-lg">
-                        You can safely log out from here.
-                    </p>
+                    <p className="mb-4 text-gray-700 text-lg">You can safely log out from here.</p>
                     <button
                         onClick={handleLogout}
                         className="inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold rounded-md text-white bg-red-600 hover:bg-red-700"
                     >
-                        <FiLogOut className="w-6 h-6"/> Logout
+                        <FiLogOut className="w-6 h-6" /> Logout
                     </button>
                 </div>
-
 
                 <div className="bg-white rounded-xl shadow p-6 text-center">
                     <h3 className="text-lg font-bold text-red-600 mb-4">Delete Account</h3>
                     <p className="text-gray-700 mb-4">
-                        Permanently delete your account and all associated data. This action
-                        cannot be undone.
+                        Permanently delete your account and all associated data. This action cannot be undone.
                     </p>
                     <button
                         type="button"
                         onClick={onDelete}
                         className="inline-flex items-center gap-2 px-6 py-3 text-lg font-semibold rounded-md text-white bg-red-800 hover:bg-red-900"
                     >
-                        <FiUserX className="w-6 h-6"/> Delete Account
+                        <FiUserX className="w-6 h-6" /> Delete Account
                     </button>
                 </div>
-
 
                 {showViewModal && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
