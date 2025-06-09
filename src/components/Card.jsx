@@ -7,13 +7,19 @@ export const Card=(props)=>{
     setShowDetails((prev) => !prev);                                                              // toggle true/false ans set showDetails               prev=previous alue of showDetails
     };
 
+    const imageUrl =
+        props.image?.startsWith("data:") ||
+        props.image?.startsWith("blob:")
+            ? props.image
+            : `http://localhost:3000/uploads/classImages/${props.image}`;
+
       return (
     <div
       className="bg-white shadow-md rounded-lg p-4 w-full sm:w-[300px] cursor-pointer hover:shadow-lg transition duration-300"
       onClick={handleCardClick}
     >
       <img
-        src={props.image}
+        src={imageUrl}
         alt="Class"
         className="w-full h-48 object-cover rounded-md mb-4"
       />
