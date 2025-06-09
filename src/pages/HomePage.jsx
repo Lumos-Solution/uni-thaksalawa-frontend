@@ -131,7 +131,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 mt-28">
       {showIntro && (
         <>
           <div className="text-center mb-12">

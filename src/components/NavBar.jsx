@@ -9,13 +9,13 @@ function NavBar() {
     const closeMenu = () => setIsOpen(false);
     const isLoggedIn = localStorage.getItem("isLoggedIn");
     return (
-        <nav className="bg-[#1E293B] p-4 shadow-md">
+        <nav className="fixed top-0 left-0 w-full z-50 bg-[#1E293B] p-4 shadow-md">
             <div className="container mx-auto flex items-center justify-between">
 
                 <Link to="/" className="flex items-center space-x-2">
                     <img src="/logo.png" alt="Logo" className="h-8 w-8"/>
                     <span className="text-white font-bold text-xl tracking-wide">
-                        Uni-Thaksalawa
+                        Uni-තක්සලාව
                     </span>
                 </Link>
 

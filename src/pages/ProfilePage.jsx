@@ -179,7 +179,7 @@ export default function ProfilePage() {
             : `http://localhost:3000/uploads/profilePics/${formData.profilePic}`;
 
     return (
-        <div className="min-h-screen bg-gray-100 flex">
+        <div className="min-h-screen bg-gray-100 flex mt-10">
             <div className="flex-1 p-10 space-y-10">
                 <form onSubmit={handleSubmit} className="space-y-10">
 
