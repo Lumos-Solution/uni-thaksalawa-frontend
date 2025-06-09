@@ -33,7 +33,6 @@ function NavBar() {
                 >
                     <li className="md:hidden flex justify-end mb-2">
                         <button onClick={closeMenu} className="text-white hover:text-red-400 text-sm">
-                            ✖ Close
                         </button>
                     </li>
 
@@ -41,7 +40,7 @@ function NavBar() {
                         <Link
                             to="/"
                             onClick={closeMenu}
-                            className="block text-white hover:text-teal-400 transition duration-200"
+                            className="block text-white hover:text-teal-400 transition duration-200 font-medium tracking-wide"
                         >
                             Home
                         </Link>
@@ -50,7 +49,7 @@ function NavBar() {
                         <Link
                             to="/myClasses"
                             onClick={closeMenu}
-                            className="block text-white hover:text-teal-400 transition duration-200"
+                            className="block text-white hover:text-teal-400 transition duration-200 font-medium tracking-wide"
                         >
                             My Classes
                         </Link>
@@ -59,7 +58,7 @@ function NavBar() {
                         <Link
                             to="/myEnrollments"
                             onClick={closeMenu}
-                            className="block text-white hover:text-teal-400 transition duration-200"
+                            className="block text-white hover:text-teal-400 transition duration-200 font-medium tracking-wide"
                         >
                             My Enrollments
                         </Link>
@@ -71,7 +70,7 @@ function NavBar() {
                                 <Link
                                     to="/login"
                                     onClick={closeMenu}
-                                    className="block text-white hover:text-teal-400 transition duration-200"
+                                    className="block text-white hover:text-teal-400 transition duration-200 font-medium tracking-wide"
                                 >
                                     Login
                                 </Link>
@@ -80,7 +79,7 @@ function NavBar() {
                                 <Link
                                     to="/signUp"
                                     onClick={closeMenu}
-                                    className="block text-white hover:text-teal-400 transition duration-200"
+                                    className="block text-white hover:text-teal-400 transition duration-200 font-medium tracking-wide"
                                 >
                                     Sign Up
                                 </Link>
@@ -92,7 +91,7 @@ function NavBar() {
                                 <Link
                                     to="/dashboard"
                                     onClick={closeMenu}
-                                    className="block text-white hover:text-teal-400 transition duration-200"
+                                    className="block text-white hover:text-teal-400 transition duration-200 font-medium tracking-wide"
                                 >
                                     Dashboard
                                 </Link>
@@ -101,7 +100,7 @@ function NavBar() {
                                 <Link
                                     to="/notifications"
                                     onClick={closeMenu}
-                                    className="block text-white hover:text-teal-400 transition duration-200"
+                                    className="block text-white hover:text-teal-400 transition duration-200 font-medium tracking-wide"
                                 >
                                     Notifications
                                 </Link>
@@ -110,7 +109,7 @@ function NavBar() {
                                 <Link
                                     to="/profile"
                                     onClick={closeMenu}
-                                    className="flex items-center space-x-2 text-white hover:text-teal-400 transition duration-200"
+                                    className="block text-white hover:text-teal-400 transition duration-200 font-medium tracking-wide"
                                 >
                                     {profilePic && (
                                         <img

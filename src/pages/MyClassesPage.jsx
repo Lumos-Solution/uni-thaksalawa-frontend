@@ -23,7 +23,7 @@ function MyClassesPage() {
 
     const [classes, setClasses] = useState([]);            //This creates a state called classes, which starts as an empty list. It's used to store classes user has created by setClasses().
     return (
-        <div className="my-classes-page">
+        <div className="my-classes-page mt-24">
 
             {/* Header row: My Classes title + Add Class button */}
             <div className="flex justify-between items-center mb-4">
