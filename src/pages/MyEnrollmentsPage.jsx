@@ -85,7 +85,7 @@ const MyEnrollmentsPage = () => {
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div className="p-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="p-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-28">
             {enrolledClasses.map((cls, index) => (
                 <Card
                     key={index}

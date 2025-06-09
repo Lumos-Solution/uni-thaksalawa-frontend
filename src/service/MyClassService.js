@@ -5,7 +5,7 @@ const api = axios.create({baseURL:"http://localhost:3000/api"});
 
 // Function to get my classes for a given username
 export const getClassesByUsername = async (username) => {
-  const username=localStorage.getItem("username");
+ /// const username=localStorage.getItem("username");
   try {
     const response = await api.get(`/classes/getClasses/${username}`);
     return response.data;

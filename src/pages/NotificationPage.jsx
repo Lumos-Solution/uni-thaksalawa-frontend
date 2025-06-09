@@ -28,7 +28,7 @@ function NotificationPage() {
     if (error) return <div className="p-5 text-red-500">{error}</div>;
 
     return (
-        <div className="p-5">
+        <div className="p-5 mt-28">
             <h2 className="text-2xl font-bold mb-4">My Notifications</h2>
             {notifications.length === 0 ? (
                 <p>No notifications found.</p>

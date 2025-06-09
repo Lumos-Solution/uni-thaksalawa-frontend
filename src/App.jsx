@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
-import { useState, useEffect } from "react";
+import {BrowserRouter as Router, Routes, Route, Navigate, Outlet} from "react-router-dom";
+import {useState, useEffect} from "react";
 import HomePage from "./pages/HomePage.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import SignInPage from "./pages/SignInPage.jsx";
@@ -9,6 +9,7 @@ import NavBar from "./components/NavBar.jsx";
 import MyEnrollmentsPage from "./pages/MyEnrollmentsPage.jsx";
 import NotificationPage from "./pages/NotificationPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
 
@@ -20,14 +21,17 @@ function App() {
         localStorage.setItem("isLoggedIn", isLoggedIn.toString());
     }, [isLoggedIn]);
 
-    const ProtectedRoute = ({ children }) => {
-        return isLoggedIn ? children : <Navigate to="/login" />;
+    const ProtectedRoute = ({children}) => {
+        return isLoggedIn ? children : <Navigate to="/login"/>;
     };
 
     const UserLayout = () => (
-        <div>
+        <div className="flex flex-col min-h-screen">
             <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-            <Outlet />
+            <main className="flex-grow">
+                <Outlet />
+            </main>
+            <Footer />
         </div>
     );
 
@@ -35,20 +39,20 @@ function App() {
         <Router>
             <Routes>
 
-                <Route element={<UserLayout />}>
-                    <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
-                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                    <Route path="/myClasses" element={<MyclassesPage />} />
+                <Route element={<UserLayout/>}>
+                    <Route path="/" element={<HomePage isLoggedIn={isLoggedIn}/>}/>
+                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
+                    <Route path="/myClasses" element={<MyclassesPage/>}/>
 
-                    <Route path="/myEnrollments" element={<MyEnrollmentsPage />} />
-                    <Route path="/myEnrollments" element={<ProtectedRoute><MyEnrollmentsPage /></ProtectedRoute>} />
-                    <Route path="/notifications" element={<ProtectedRoute><NotificationPage /></ProtectedRoute>} />
-                    <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>} />
+                    <Route path="/myEnrollments" element={<MyEnrollmentsPage/>}/>
+                    <Route path="/myEnrollments" element={<ProtectedRoute><MyEnrollmentsPage/></ProtectedRoute>}/>
+                    <Route path="/notifications" element={<ProtectedRoute><NotificationPage/></ProtectedRoute>}/>
+                    <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
 
                 </Route>
 
-                <Route path="/login" element={<SignInPage setIsLoggedIn={setIsLoggedIn} />} />
-                <Route path="/signUp" element={<SignUpPage />} />
+                <Route path="/login" element={<SignInPage setIsLoggedIn={setIsLoggedIn}/>}/>
+                <Route path="/signUp" element={<SignUpPage/>}/>
             </Routes>
         </Router>
     );

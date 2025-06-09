@@ -54,7 +54,7 @@ function MyClassesPage() {
 
 
             {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 mt-28">
                     <div className="bg-white p-6 rounded shadow-lg w-[550px]">
                         <h3 className="text-lg font-bold mb-4">Add New Class</h3>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { transferStudent, deleteNotification } from "../service/NotificationService.js";
 
-function NotificationCard({ index, classId, title, userName, setNotifications, notifications }) {
+function NotificationCard({  classId, title, userName, setNotifications }) {
 
     async function considerRequest() {
         try {

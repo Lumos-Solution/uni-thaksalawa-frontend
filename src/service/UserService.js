@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = axios.create({ baseURL: 'http://localhost:3000' });
+const api = axios.create({baseURL: 'http://localhost:3000'});
 
 export const fetchCurrentUser = async () => {
     const username = localStorage.getItem('username');
@@ -50,7 +50,7 @@ export const updateUser = async (userName, data) => {
 };
 
 export const deleteUser = async () => {
-   const username= localStorage.getItem("username");
+    const username = localStorage.getItem("username");
 
     const response = await fetch(`http://localhost:3000/api/user/delete/${username}`, {
         method: "DELETE",

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate, Link } from 'react-router-dom';
 
-function Signin({setIsLoggedIn}) {
+function Signin({ setIsLoggedIn }) {
   const navigate = useNavigate();
   const [form, setForm] = useState({ userName: '', password: '' });
 
@@ -33,39 +33,51 @@ function Signin({setIsLoggedIn}) {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign In</h2>
+      <div className="flex max-w-4xl w-full bg-white rounded shadow-md overflow-hidden">
+        {}
+        <div className="hidden md:block md:w-1/2">
+          <img
+            src="/sigin.jpg"  
+            alt="Signin Illustration"
+            className="object-cover w-full h-full"
+          />
+        </div>
 
-        <input
-          type="text"
-          name="userName"
-          placeholder="Username"
-          value={form.userName}
-          onChange={handleChange}
-          className="w-full p-2 border mb-3 rounded"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          className="w-full p-2 border mb-3 rounded"
-          required
-        />
+        {}
+        <form onSubmit={handleSubmit} className="w-full md:w-1/2 p-6">
+          <h2 className="text-2xl font-bold mb-4 text-center">Sign In</h2>
 
-        <button type="submit" className="bg-green-500 text-white w-full py-2 rounded hover:bg-green-600">
-          Login
-        </button>
+          <input
+            type="text"
+            name="userName"
+            placeholder="Username"
+            value={form.userName}
+            onChange={handleChange}
+            className="w-full p-2 border mb-3 rounded"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            className="w-full p-2 border mb-3 rounded"
+            required
+          />
 
-        <p className="mt-4 text-center text-sm">
-          Haven't an account?{' '}
-          <Link to="/signUp" className="text-blue-600 hover:underline">
-            Create new account
-          </Link>
-        </p>
-      </form>
+          <button type="submit" className="bg-green-500 text-white w-full py-2 rounded hover:bg-green-600">
+            Login
+          </button>
+
+          <p className="mt-4 text-center text-sm">
+            Haven't an account?{' '}
+            <Link to="/signUp" className="text-blue-600 hover:underline">
+              Create new account
+            </Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }
