@@ -9,6 +9,7 @@ import NavBar from "./components/NavBar.jsx";
 import MyEnrollmentsPage from "./pages/MyEnrollmentsPage.jsx";
 import NotificationPage from "./pages/NotificationPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
 
@@ -25,9 +26,12 @@ function App() {
     };
 
     const UserLayout = () => (
-        <div>
-            <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
-            <Outlet/>
+        <div className="flex flex-col min-h-screen">
+            <NavBar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+            <main className="flex-grow">
+                <Outlet />
+            </main>
+            <Footer />
         </div>
     );
 
