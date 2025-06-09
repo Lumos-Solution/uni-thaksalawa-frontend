@@ -38,7 +38,7 @@ function Signup() {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      if (res.data.message==='success') {
+      if (res.data.message === 'success') {
         Swal.fire('Success', 'Registration Successful!', 'success');
         navigate('/login');
       } else {
@@ -53,16 +53,16 @@ function Signup() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="flex max-w-4xl w-full bg-white rounded shadow-md overflow-hidden">
-        {}
+        {/* Left-side image (only on medium+ screens) */}
         <div className="hidden md:block md:w-1/2">
           <img
-            src="/signup.jpg"  
+            src="/signup.jpg"
             alt="Signup Illustration"
             className="object-cover w-full h-full"
           />
         </div>
 
-        {}
+        {/* Signup form */}
         <form
           onSubmit={handleSubmit}
           className="w-full md:w-1/2 p-6"
@@ -124,31 +124,15 @@ function Signup() {
             required
           >
             <option value="">Select Location</option>
-            <option>Ampara</option>
-            <option>Anuradhapura</option>
-            <option>Badulla</option>
-            <option>Batticaloa</option>
-            <option>Colombo</option>
-            <option>Galle</option>
-            <option>Gampaha</option>
-            <option>Hambantota</option>
-            <option>Jaffna</option>
-            <option>Kalutara</option>
-            <option>Kandy</option>
-            <option>Kegalle</option>
-            <option>Kilinochchi</option>
-            <option>Kurunegala</option>
-            <option>Mannar</option>
-            <option>Matale</option>
-            <option>Matara</option>
-            <option>Monaragala</option>
-            <option>Mullaitivu</option>
-            <option>Nuwara Eliya</option>
-            <option>Polonnaruwa</option>
-            <option>Puttalam</option>
-            <option>Ratnapura</option>
-            <option>Trincomalee</option>
-            <option>Vavuniya</option>
+            {[
+              'Ampara', 'Anuradhapura', 'Badulla', 'Batticaloa', 'Colombo',
+              'Galle', 'Gampaha', 'Hambantota', 'Jaffna', 'Kalutara',
+              'Kandy', 'Kegalle', 'Kilinochchi', 'Kurunegala', 'Mannar',
+              'Matale', 'Matara', 'Monaragala', 'Mullaitivu', 'Nuwara Eliya',
+              'Polonnaruwa', 'Puttalam', 'Ratnapura', 'Trincomalee', 'Vavuniya'
+            ].map(loc => (
+              <option key={loc} value={loc}>{loc}</option>
+            ))}
           </select>
 
           <select

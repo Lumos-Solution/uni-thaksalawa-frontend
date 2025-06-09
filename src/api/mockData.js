@@ -1,5 +1,3 @@
-// src/mockData.js
-
 export const mockClasses = [
   {
     id: 'c101',
