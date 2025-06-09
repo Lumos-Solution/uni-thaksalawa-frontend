@@ -25,10 +25,10 @@ export const addClass = async (classData, username) => {
     formData.append("date", classData.date);
     formData.append("time", classData.time);
     formData.append("fee", classData.fee);
-    formData.append("image", classData.image);
+    formData.append("classImage", classData.classImage);
     formData.append("username", username);
 
-    const response = await api.post("/classes/addClass", formData, {
+    const response = await api.post("/class/add", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
