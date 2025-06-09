@@ -1,5 +1,3 @@
-
-// src/components/NotificationCard.jsx
 import React from 'react';
 import { transferStudent, deleteNotification } from "../service/NotificationService.js";
 

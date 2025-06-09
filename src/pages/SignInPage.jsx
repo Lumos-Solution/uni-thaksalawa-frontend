@@ -21,7 +21,6 @@ function Signin({setIsLoggedIn}) {
         localStorage.setItem('username', form.userName);
         localStorage.setItem('isLoggedIn', 'true');
         setIsLoggedIn("true");
-        //Swal.fire('Welcome', 'Login Successful!', 'success');
         navigate('/dashboard');
       } else {
         Swal.fire('Oops', 'Invalid username or password', 'error');

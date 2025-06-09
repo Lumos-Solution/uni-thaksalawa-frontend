@@ -59,7 +59,7 @@ function Signup() {
       >
         <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
 
-        {/* Text fields */}
+        {}
         <input
           type="text"
           name="userName"
@@ -106,7 +106,7 @@ function Signup() {
           required
         />
 
-        {/* Location dropdown */}
+        {}
         <select
           name="location"
           value={form.location}
@@ -142,7 +142,7 @@ function Signup() {
           <option>Vavuniya</option>
         </select>
 
-        {/* User type dropdown */}
+        {}
         <select
           name="userType"
           value={form.userType}
@@ -157,7 +157,7 @@ function Signup() {
           <option value="other">Other</option>
         </select>
 
-        {/* Profile picture upload */}
+        {}
         <input
           type="file"
           accept="image/*"

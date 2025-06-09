@@ -182,7 +182,7 @@ export default function ProfilePage() {
         <div className="min-h-screen bg-gray-100 flex">
             <div className="flex-1 p-10 space-y-10">
                 <form onSubmit={handleSubmit} className="space-y-10">
-                    {/* Profile Card */}
+                    {}
                     <div className="bg-white rounded-xl shadow p-6 flex items-center gap-6 relative">
                         <img
                             src={imageUrl}
@@ -226,7 +226,7 @@ export default function ProfilePage() {
                         />
                     </div>
 
-                    {/* Edit Form */}
+                    {}
                     <div className="bg-white rounded-xl shadow p-6 space-y-6">
                         <h3 className="text-lg font-bold">Edit Profile</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -297,14 +297,14 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-                    {/* Theme Section */}
+                    {}
                     <div className="bg-white rounded-xl shadow p-6 space-y-6">
                         <h3 className="text-lg font-bold">Theme Settings</h3>
                         <p className="text-gray-600">Theme customization will be available soon...</p>
                     </div>
                 </form>
 
-                {/* Logout Section */}
+                {}
                 <div className="bg-white rounded-xl shadow p-6 text-center">
                     <p className="mb-4 text-gray-700 text-lg">
                         You can safely log out from here.
@@ -317,7 +317,7 @@ export default function ProfilePage() {
                     </button>
                 </div>
 
-                {/* Delete Account Section */}
+                {}
                 <div className="bg-white rounded-xl shadow p-6 text-center">
                     <h3 className="text-lg font-bold text-red-600 mb-4">Delete Account</h3>
                     <p className="text-gray-700 mb-4">
@@ -333,7 +333,7 @@ export default function ProfilePage() {
                     </button>
                 </div>
 
-                {/* View Photo Modal */}
+                {}
                 {showViewModal && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
                         <div className="bg-white rounded-lg p-4 max-w-lg w-full relative">

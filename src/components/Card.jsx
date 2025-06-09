@@ -51,6 +51,3 @@ export const Card=(props)=>{
     );
 
 };
-
-//onClick={(e) => e.stopPropagation() means When  button clicked, stop this click from affecting any parent elements 
-//clicking this button doesnt call the handleCardClick function
