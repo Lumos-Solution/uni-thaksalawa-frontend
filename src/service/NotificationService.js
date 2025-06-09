@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// Create a reusable axios instance
-const api = axios.create({ baseURL: 'http://localhost:3000' });
 
-// Fetch notifications for the logged-in user
+const api = axios.create({baseURL: 'http://localhost:3000'});
+
+
 export const fetchNotifications = async () => {
     const username = localStorage.getItem('username');
     if (!username) {
@@ -13,7 +13,7 @@ export const fetchNotifications = async () => {
     return response.data;
 };
 
-// Transfer student to a class
+
 export const transferStudent = async (userName, classId) => {
     const response = await api.put('/api/userClassDetails/update', {
         userName,
@@ -22,10 +22,10 @@ export const transferStudent = async (userName, classId) => {
     return response.data;
 };
 
-// ✅ Delete a student-class request
+
 export const deleteNotification = async (userName, classId) => {
     const response = await api.delete('/api/userClassDetails/delete', {
-        data: { userName, classId } // body for DELETE request
+        data: {userName, classId}
     });
     return response.data;
 };
