@@ -20,6 +20,7 @@ function MyClassesPage() {
         classImage: null,
     });
 
+
     const [classes, setClasses] = useState([]);            //This creates a state called classes, which starts as an empty list. It's used to store classes user has created by setClasses().
     return (
         <div className="my-classes-page">
