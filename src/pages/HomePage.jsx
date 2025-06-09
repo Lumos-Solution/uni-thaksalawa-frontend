@@ -3,15 +3,14 @@ import { fetchClasses } from '../API/ClassApi';
 import ClassCard from '../components/ClassCard';
 import axios from "axios";
 
-
 const HomePage = () => {
-
   const [classes, setClasses] = useState([]);
   const [filteredClasses, setFilteredClasses] = useState([]);
   const [subjectFilter, setSubjectFilter] = useState('');
   const [teacherFilter, setTeacherFilter] = useState('');
   const [titleFilter, setTitleFilter] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
+  const [userDistrict, setUserDistrict] = useState('');
   const [userLocation, setUserLocation] = useState(null);
   const [showIntro, setShowIntro] = useState(true);
   const [showClasses, setShowClasses] = useState(false);
@@ -27,16 +26,34 @@ const HomePage = () => {
     };
     loadClasses();
   }, []);
+
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setUserLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation({ latitude, longitude });
+
+        try {
+          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+          const data = await response.json();
+          const district = data.address.district || data.address.county || data.address.state_district || '';
+          const cleanedDistrict = district.replace(" District", "").trim();
+          setUserDistrict(cleanedDistrict);
+          if (!locationFilter) 
+            {
+              setLocationFilter(cleanedDistrict);
+            }
+
+        } catch (error) {
+          console.error("Error getting district:", error);
+        }
+
+      }, (error) => {
+        console.error("Geolocation error:", error.message);
+        alert("Unable to retrieve your location.");
       });
     } else {
-      alert('Geolocation is not supported by this browser.');
+      alert("Geolocation is not supported by this browser.");
     }
   }, []);
 
@@ -48,60 +65,29 @@ const HomePage = () => {
         cls.subject.toLowerCase().includes(subjectFilter.toLowerCase())
       );
     }
+
     if (teacherFilter) {
       filtered = filtered.filter((cls) =>
         cls.teacher.toLowerCase().includes(teacherFilter.toLowerCase())
       );
     }
+
     if (titleFilter) {
       filtered = filtered.filter((cls) =>
         cls.title.toLowerCase().includes(titleFilter.toLowerCase())
       );
     }
-    if (locationFilter) {
+
+    const effectiveLocation = locationFilter || userDistrict;
+
+    if (effectiveLocation) {
       filtered = filtered.filter((cls) =>
-        cls.location.toLowerCase().includes(locationFilter.toLowerCase())
+        cls.location.toLowerCase().includes(effectiveLocation.toLowerCase())
       );
     }
 
-    if (userLocation) {
-      filtered = filtered.sort((a, b) => {
-        const distanceA = getDistance(userLocation, a.location);
-        const distanceB = getDistance(userLocation, b.location);
-        return distanceA - distanceB;
-      });
-    }
-
     setFilteredClasses(filtered);
-  }, [subjectFilter, teacherFilter, titleFilter, locationFilter, userLocation, showClasses, classes]);
-
-  const getDistance = (userLocation, classLocation) => {
-    const [userLat, userLon] = [userLocation.latitude, userLocation.longitude];
-    const classCoords = getCoordinatesForLocation(classLocation);
-    const [classLat, classLon] = classCoords;
-
-    const R = 6371;
-    const dLat = toRad(classLat - userLat);
-    const dLon = toRad(classLon - userLon);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRad(userLat)) * Math.cos(toRad(classLat)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  };
-
-  const toRad = (value) => value * (Math.PI / 180);
-
-  const getCoordinatesForLocation = (location) => {
-    const locationCoordinates = {
-      'Moratuwa': [6.9869, 79.9985],
-      'Galle': [6.0535, 80.2200],
-      'Ratnapura': [6.4345, 80.3937],
-      'Kurunagala': [7.4675, 80.3684],
-    };
-    return locationCoordinates[location] || [0, 0];
-  };
+  }, [subjectFilter, teacherFilter, titleFilter, locationFilter, userDistrict, classes]);
 
   const handleEnroll = async (classData) => {
     const userName = localStorage.getItem("username");
@@ -197,7 +183,7 @@ const HomePage = () => {
               />
               <input
                 type="text"
-                placeholder="Filter by location"
+                placeholder="Filter by location (optional)"
                 value={locationFilter}
                 onChange={(e) => setLocationFilter(e.target.value)}
                 className="p-2 border rounded"
