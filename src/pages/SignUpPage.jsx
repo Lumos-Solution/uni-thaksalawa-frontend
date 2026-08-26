@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import { signUp } from '../auth/authService';
 import { useNavigate, Link } from 'react-router-dom';
 
 function Signup() {
@@ -34,11 +34,9 @@ function Signup() {
     }
 
     try {
-      const res = await axios.post('http://localhost:3000/api/user/signup', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const data = await signUp(formData);
 
-      if (res.data.message === 'success') {
+      if (data.message === 'success') {
         Swal.fire('Success', 'Registration Successful!', 'success');
         navigate('/login');
       } else {

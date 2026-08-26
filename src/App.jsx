@@ -10,12 +10,13 @@ import MyEnrollmentsPage from "./pages/MyEnrollmentsPage.jsx";
 import NotificationPage from "./pages/NotificationPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Footer from "./components/Footer.jsx";
+import { hasValidSession } from "./auth/tokenStorage.js";
 
 function App() {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(() => {
-        return localStorage.getItem("isLoggedIn") === "true";
-    });
+    // A session exists only if a non-expired JWT is stored - a leftover
+    // "isLoggedIn" flag is no longer enough to get past a protected route.
+    const [isLoggedIn, setIsLoggedIn] = useState(hasValidSession);
 
     useEffect(() => {
         localStorage.setItem("isLoggedIn", isLoggedIn.toString());
@@ -31,7 +32,7 @@ function App() {
             <main className="flex-grow">
                 <Outlet />
             </main>
-            <Footer />
+            <Footer isLoggedIn={isLoggedIn} />
         </div>
     );
 
@@ -42,9 +43,7 @@ function App() {
                 <Route element={<UserLayout/>}>
                     <Route path="/" element={<HomePage isLoggedIn={isLoggedIn}/>}/>
                     <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
-                    <Route path="/myClasses" element={<MyclassesPage/>}/>
-
-                    <Route path="/myEnrollments" element={<MyEnrollmentsPage/>}/>
+                    <Route path="/myClasses" element={<ProtectedRoute><MyclassesPage/></ProtectedRoute>}/>
                     <Route path="/myEnrollments" element={<ProtectedRoute><MyEnrollmentsPage/></ProtectedRoute>}/>
                     <Route path="/notifications" element={<ProtectedRoute><NotificationPage/></ProtectedRoute>}/>
                     <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>

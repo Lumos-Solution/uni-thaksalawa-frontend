@@ -1,6 +1,6 @@
 import { mockClasses } from './mockData';
-import axios from "axios";
-const api = axios.create({baseURL:"http://localhost:3000/api"});
+import api from "../auth/apiClient";
+
 export const getAllClasses = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -10,6 +10,6 @@ export const getAllClasses = () => {
 };
 
 export const fetchClasses = async () => {
-  const response = await api.get(`/class/getAll`);
+  const response = await api.get(`/api/class/getAll`);
   return response.data;
 };

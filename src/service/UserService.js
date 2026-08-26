@@ -1,16 +1,10 @@
-import axios from "axios";
-
-const api = axios.create({baseURL: 'http://localhost:3000'});
+import api from "../auth/apiClient";
+import { getCurrentUserName } from "../auth/tokenStorage";
 
 export const fetchCurrentUser = async () => {
-    const username = localStorage.getItem('username');
-    if (!username) {
-        throw new Error('User not logged in');
-    }
-
     try {
-        const response = await api.get(`/api/user/find/${username}`);
-        console.log(response.data.profilePic);
+        // The server resolves the user from the JWT, so no username is sent.
+        const response = await api.get('/api/user/me');
         return response.data;
     } catch (error) {
         console.error("Error in fetchCurrentUser:", error);
@@ -50,13 +44,12 @@ export const updateUser = async (userName, data) => {
 };
 
 export const deleteUser = async () => {
-    const username = localStorage.getItem("username");
+    const username = getCurrentUserName();
 
-    const response = await fetch(`http://localhost:3000/api/user/delete/${username}`, {
-        method: "DELETE",
-    });
-    if (!response.ok) {
-        throw new Error("Failed to delete account");
+    try {
+        const response = await api.delete(`/api/user/delete/${username}`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Failed to delete account");
     }
-    return response.json();
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import { signIn } from '../auth/authService';
 import { useNavigate, Link } from 'react-router-dom';
 
 function Signin({ setIsLoggedIn }) {
@@ -14,20 +14,18 @@ function Signin({ setIsLoggedIn }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3000/api/user/signin', form);
-      console.log("send");
-      console.log(res);
-      if (res.data.message === 'success') {
-        localStorage.setItem('username', form.userName);
-        localStorage.setItem('isLoggedIn', 'true');
-        setIsLoggedIn("true");
-        navigate('/dashboard');
-      } else {
-        Swal.fire('Oops', 'Invalid username or password', 'error');
-      }
+      // Stores the JWT pair returned by the server; every later request is
+      // authenticated with it.
+      await signIn(form);
+      setIsLoggedIn(true);
+      navigate('/dashboard');
     } catch (error) {
       console.error(error);
-      Swal.fire('Error', 'Server Error', 'error');
+      if (error.response?.status === 401) {
+        Swal.fire('Oops', 'Invalid username or password', 'error');
+      } else {
+        Swal.fire('Error', 'Server Error', 'error');
+      }
     }
   };
 

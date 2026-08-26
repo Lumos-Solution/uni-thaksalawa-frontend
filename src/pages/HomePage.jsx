@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { fetchClasses } from '../API/ClassApi';
 import ClassCard from '../components/ClassCard';
-import axios from "axios";
+import api from "../auth/apiClient";
+import { getCurrentUserName } from "../auth/tokenStorage";
 
 const HomePage = () => {
   const [classes, setClasses] = useState([]);
@@ -90,7 +91,7 @@ const HomePage = () => {
   }, [subjectFilter, teacherFilter, titleFilter, locationFilter, userDistrict, classes]);
 
   const handleEnroll = async (classData) => {
-    const userName = localStorage.getItem("username");
+    const userName = getCurrentUserName();
     const dataToSend = {
       userName: userName,
       classId: classData.classId,
@@ -98,7 +99,7 @@ const HomePage = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:3000/api/userClassDetails/add", dataToSend);
+      const response = await api.post("/api/userClassDetails/add", dataToSend);
 
       if (response.status === 200 || response.status === 201) {
         alert("✅ Enrolled successfully!");
@@ -107,7 +108,11 @@ const HomePage = () => {
       }
     } catch (error) {
       console.error("Error enrolling:", error);
-      alert("❌ Something went wrong.");
+      if (error.response?.status === 401) {
+        alert("Please sign in before enrolling.");
+      } else {
+        alert("❌ Something went wrong.");
+      }
     }
   };
 

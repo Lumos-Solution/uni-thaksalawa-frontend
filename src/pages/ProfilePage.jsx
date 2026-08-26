@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from "react";
 import {FiLogOut, FiUserX} from "react-icons/fi";
 import {deleteUser, fetchCurrentUser, updateUser} from "../service/userService";
 import {useNavigate} from "react-router-dom";
+import { signOut } from "../auth/authService";
 
 
 export default function ProfilePage() {
@@ -145,8 +146,8 @@ export default function ProfilePage() {
     const handleLogout = () => {
         const confirmLogout = window.confirm("Do you want to log out?");
         if (confirmLogout) {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("username");
+            // Drops the stored JWTs as well as the profile details.
+            signOut();
             navigate("/login");
         }
     }
@@ -160,8 +161,7 @@ export default function ProfilePage() {
             deleteUser()
                 .then(() => {
                     alert("Account deleted successfully.");
-                    localStorage.removeItem("isLoggedIn");
-                    localStorage.removeItem("username");
+                    signOut();
                     navigate("/login");
                 })
                 .catch((error) => {

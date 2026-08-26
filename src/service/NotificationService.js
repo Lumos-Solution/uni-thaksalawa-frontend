@@ -1,9 +1,8 @@
-import axios from 'axios';
-
-const api = axios.create({ baseURL: 'http://localhost:3000' });
+import api from '../auth/apiClient';
+import { getCurrentUserName } from '../auth/tokenStorage';
 
 export const fetchNotifications = async () => {
-  const username = localStorage.getItem('username');
+  const username = getCurrentUserName();
   if (!username) {
     throw new Error('User not logged in');
   }
