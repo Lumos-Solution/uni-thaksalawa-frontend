@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import NotificationCard from '../components/NotificationCard';
-import { fetchNotifications, transferStudent } from '../service/NotificationService';
+import { fetchNotifications } from '../service/NotificationService';
 
 function NotificationPage() {
     const [notifications, setNotifications] = useState([]);
@@ -8,40 +8,41 @@ function NotificationPage() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const loadNotifications = async () => {
-            try {
-                const data = await fetchNotifications();
-                setNotifications(data);
-            } catch (err) {
-                setError('Failed to load notifications');
+        fetchNotifications()
+            .then(setNotifications)
+            .catch((err) => {
                 console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadNotifications();
+                setError('Failed to load notifications');
+            })
+            .finally(() => setLoading(false));
     }, []);
 
+    // An answered request is gone from the server, so it is dropped from the list.
+    const removeAnswered = (userName, classId) => {
+        setNotifications((current) =>
+            current.filter(
+                (note) => !(note.request.userName === userName && note.classInfo.classId === classId)
+            )
+        );
+    };
 
-    if (loading) return <div className="p-5">Loading notifications...</div>;
-    if (error) return <div className="p-5 text-red-500">{error}</div>;
+    if (loading) return <div className="p-5 mt-28">Loading notifications...</div>;
+    if (error) return <div className="p-5 mt-28 text-red-500">{error}</div>;
 
     return (
         <div className="p-5 mt-28">
-            <h2 className="text-2xl font-bold mb-4">My Notifications</h2>
+            <h2 className="text-2xl font-bold mb-4">Join Requests</h2>
+
             {notifications.length === 0 ? (
-                <p>No notifications found.</p>
+                <p>No one is waiting for your approval right now.</p>
             ) : (
-                notifications.map((note, i) => (
+                notifications.map((note) => (
                     <NotificationCard
-                        key={i}
-                        index={i + 1}
-                        classId={note.classInfo.classId}
-                        title={note.classInfo.title}
+                        key={`${note.request.userName}-${note.classInfo.classId}`}
+                        classInfo={note.classInfo}
+                        student={note.student}
                         userName={note.request.userName}
-                        setNotifications={setNotifications}
-                        notifications={notifications}
+                        onAnswered={removeAnswered}
                     />
                 ))
             )}

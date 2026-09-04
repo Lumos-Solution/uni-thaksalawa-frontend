@@ -1,6 +1,7 @@
 import api from '../auth/apiClient';
 import { getCurrentUserName } from '../auth/tokenStorage';
 
+/** Join requests waiting for the logged-in teacher to answer. */
 export const fetchNotifications = async () => {
   const username = getCurrentUserName();
   if (!username) {
@@ -10,17 +11,14 @@ export const fetchNotifications = async () => {
   return response.data;
 };
 
-export const transferStudent = async (userName, classId) => {
-  const response = await api.put('/api/userClassDetails/update', {
-    userName,
-    classId
-  });
+export const approveRequest = async (userName, classId) => {
+  const response = await api.put('/api/userClassDetails/approve', { userName, classId });
   return response.data;
 };
 
-export const deleteNotification = async (userName, classId) => {
-  const response = await api.delete('/api/userClassDetails/delete', {
-    data: { userName, classId }
+export const declineRequest = async (userName, classId) => {
+  const response = await api.delete('/api/userClassDetails/decline', {
+    data: { userName, classId },
   });
   return response.data;
 };

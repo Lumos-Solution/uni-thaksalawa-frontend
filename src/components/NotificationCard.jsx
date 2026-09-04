@@ -1,84 +1,79 @@
-import React from 'react';
-import { transferStudent, deleteNotification } from "../service/NotificationService.js";
+import React, { useState } from 'react';
+import { approveRequest, declineRequest } from '../service/NotificationService.js';
 
-function NotificationCard({  classId, title, userName, setNotifications }) {
+/**
+ * One student's request to join one class, with the details the teacher needs
+ * to decide. Approving or declining removes the card through onAnswered.
+ */
+function NotificationCard({ classInfo, student, userName, onAnswered }) {
+    const [busy, setBusy] = useState(false);
 
-    async function considerRequest() {
+    const answer = async (action, successMessage) => {
+        setBusy(true);
         try {
-            const result = await transferStudent(userName, classId);
-            if (result.message === 'success') {
-                alert('Student transferred successfully.');
-                setNotifications(prev =>
-                    prev.filter(
-                        note =>
-                            !(
-                                note.request.userName === userName &&
-                                note.classInfo.classId === classId
-                            )
-                    )
-                );
-            } else {
-                alert('Transfer failed.');
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Error during transfer.');
+            await action(userName, classInfo.classId);
+            alert(successMessage);
+            onAnswered(userName, classInfo.classId);
+        } catch (error) {
+            console.error(error);
+            alert(error.response?.data?.message || 'Could not answer this request.');
+        } finally {
+            setBusy(false);
         }
-    }
+    };
 
-    async function handleDelete() {
-        const confirmed = window.confirm(`Delete request for ${userName} in class ${classId}?`);
-        if (!confirmed) return;
-
-        try {
-            const result = await deleteNotification(userName, classId);
-            if (result.message === 'success') {
-                alert('Data is deleted.');
-                setNotifications(prev =>
-                    prev.filter(
-                        note =>
-                            !(
-                                note.request.userName === userName &&
-                                note.classInfo.classId === classId
-                            )
-                    )
-                );
-            } else {
-                alert('Deletion failed.');
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Error during deletion.');
-        }
-    }
+    const handleDecline = () => {
+        if (!window.confirm(`Decline the request from ${userName}?`)) return;
+        answer(declineRequest, 'Request declined.');
+    };
 
     return (
         <div className="bg-white shadow-md rounded-xl p-4 mb-5 w-full max-w-3xl mx-auto">
             <div className="flex items-start gap-4">
                 <div className="text-2xl">🔔</div>
+
                 <div className="flex-1">
-                    <div className="mb-2">
-                        <label className="block text-xs text-gray-500">Student Username</label>
-                        <p className="text-sm font-medium text-gray-800">{userName}</p>
-                    </div>
-                    <div className="mb-2">
-                        <label className="block text-xs text-gray-500">Class ID</label>
-                        <p className="text-sm font-medium text-gray-800">{classId}</p>
-                    </div>
-                    <div>
-                        <label className="block text-xs text-gray-500">Class Title</label>
-                        <p className="text-sm font-medium text-gray-800">{title}</p>
+                    <p className="text-sm text-gray-800 mb-3">
+                        <span className="font-semibold">{student?.name || userName}</span> wants to
+                        join <span className="font-semibold">{classInfo.title}</span>.
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                            <label className="block text-xs text-gray-500">Username</label>
+                            <p className="text-gray-800">{userName}</p>
+                        </div>
+                        <div>
+                            <label className="block text-xs text-gray-500">Class</label>
+                            <p className="text-gray-800">
+                                {classInfo.title} ({classInfo.classId})
+                            </p>
+                        </div>
+                        <div>
+                            <label className="block text-xs text-gray-500">Email</label>
+                            <p className="text-gray-800">{student?.email || '-'}</p>
+                        </div>
+                        <div>
+                            <label className="block text-xs text-gray-500">Contact</label>
+                            <p className="text-gray-800">{student?.contact || '-'}</p>
+                        </div>
                     </div>
                 </div>
+
                 <div className="flex flex-col gap-2">
-                    <button className="bg-gray-300 hover:bg-gray-400 text-sm px-4 py-1 rounded">
-                        Ignore
+                    <button
+                        onClick={() => answer(approveRequest, 'Student approved.')}
+                        disabled={busy}
+                        className="bg-green-500 hover:bg-green-600 disabled:opacity-50 text-white text-sm px-4 py-1 rounded"
+                    >
+                        Approve
                     </button>
-                    <button onClick={considerRequest} className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-1 rounded">
-                        Consider
-                    </button>
-                    <button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-1 rounded">
-                        Delete
+                    <button
+                        onClick={handleDecline}
+                        disabled={busy}
+                        className="bg-red-500 hover:bg-red-600 disabled:opacity-50 text-white text-sm px-4 py-1 rounded"
+                    >
+                        Decline
                     </button>
                 </div>
             </div>

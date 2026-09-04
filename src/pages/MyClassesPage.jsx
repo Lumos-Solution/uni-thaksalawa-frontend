@@ -1,8 +1,9 @@
 import {Card} from "../components/Card.jsx";
 import maths from "../assets/Card/maths.jpg";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import searchIcon from "../assets/search.png";
-import {addClass} from "../service/MyClassService.js";
+import {addClass, getClassesByUsername} from "../service/MyClassService.js";
+import {getCurrentUserName} from "../auth/tokenStorage.js";
 import LocationPicker from "../components/LocationPicker.jsx";
 
 
@@ -23,7 +24,46 @@ function MyClassesPage() {
     });
 
 
-    const [classes, setClasses] = useState([]);            //This creates a state called classes, which starts as an empty list. It's used to store classes user has created by setClasses().
+    const [classes, setClasses] = useState([]);
+    const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(true);
+
+    const username = getCurrentUserName();
+
+    /*
+     * The classes live on the server, so the page loads them instead of only
+     * remembering what was added since it was opened - otherwise a refresh made
+     * a newly created class disappear.
+     */
+    const loadClasses = async () => {
+        try {
+            const data = await getClassesByUsername(username);
+            setClasses(data);
+        } catch (error) {
+            console.error("Failed to load my classes:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (!username) {
+            setLoading(false);
+            return;
+        }
+        loadClasses();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [username]);
+
+    const visibleClasses = classes.filter((classItem) => {
+        const term = search.trim().toLowerCase();
+        if (!term) return true;
+        return (
+            (classItem.title || "").toLowerCase().includes(term) ||
+            (classItem.subject || "").toLowerCase().includes(term)
+        );
+    });
+
     return (
         <div className="my-classes-page mt-24">
 
@@ -50,6 +90,8 @@ function MyClassesPage() {
                     <input
                         type="text"
                         placeholder="Search here..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
                         className="p-2 pl-10 border border-gray-300 rounded w-[300px]"
                     />
                 </div>
@@ -86,10 +128,11 @@ function MyClassesPage() {
                                 e.preventDefault();
 
                                 try {
-                                    const username = localStorage.getItem("username");
-                                    const addedClass = await addClass(formData, username);
+                                    await addClass(formData, username);
 
-                                    setClasses((prevClasses) => [...prevClasses, addedClass]);
+                                    // Re-read the list so the new class is shown
+                                    // exactly as the server stored it.
+                                    await loadClasses();
 
                                     // Reset modal and form
                                     setShowModal(false);
@@ -227,11 +270,19 @@ function MyClassesPage() {
                 </div>
             )}
 
+            {loading && <p className="text-center text-gray-500">Loading your classes...</p>}
+            {!loading && visibleClasses.length === 0 && (
+                <p className="text-center text-gray-500">
+                    You have not added any classes yet.
+                </p>
+            )}
+
             <div className="class-container mt-6">
-                {classes.map((classItem, index) => (
+                {visibleClasses.map((classItem) => (
                     <Card
-                        key={index}
-                        image={classItem.classImage ? URL.createObjectURL(classItem.classImage) : maths} // use uploaded image or default
+                        key={classItem.classId}
+                        // The server stores the file name; the Card turns it into a URL.
+                        image={classItem.classImage || maths}
                         title={classItem.title}
                         subject={classItem.subject}
                         classType={classItem.classType}

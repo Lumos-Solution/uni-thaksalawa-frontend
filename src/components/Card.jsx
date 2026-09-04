@@ -7,11 +7,12 @@ export const Card=(props)=>{
     setShowDetails((prev) => !prev);                                                              // toggle true/false ans set showDetails               prev=previous alue of showDetails
     };
 
-    const imageUrl =
-        props.image?.startsWith("data:") ||
-        props.image?.startsWith("blob:")
-            ? props.image
-            : `http://localhost:3000/uploads/classImages/${props.image}`;
+    // An uploaded class image is stored as a bare file name; anything that is
+    // already a usable address (bundled asset, blob, data or http URL) is kept.
+    const isReadyUrl = /^(https?:|data:|blob:|\/)/.test(props.image || "");
+    const imageUrl = isReadyUrl
+        ? props.image
+        : `http://localhost:3000/uploads/classImages/${props.image}`;
 
       return (
     <div

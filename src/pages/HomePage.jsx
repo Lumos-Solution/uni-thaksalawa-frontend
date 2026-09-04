@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { fetchClasses } from '../api/classApi';
 import ClassCard from '../components/ClassCard';
 import api from '../auth/apiClient';
-import { getCurrentUserName } from '../auth/tokenStorage';
 import { DEFAULT_DISTANCE_KM, DISTANCE_OPTIONS, distanceInKm } from '../lib/distance';
 
 const HomePage = () => {
@@ -79,18 +78,15 @@ const HomePage = () => {
 
   const handleEnroll = async (classData) => {
     try {
-      await api.post('/api/userClassDetails/add', {
-        userName: getCurrentUserName(),
-        classId: classData.classId,
-        isJoined: false,
-      });
+      // The server takes the student from the token, so only the class is sent.
+      await api.post('/api/userClassDetails/add', { classId: classData.classId });
       alert('Request sent. The teacher will approve or decline it.');
     } catch (error) {
-      console.error('Error enrolling:', error);
+      console.error('Error requesting to join:', error);
       if (error.response?.status === 401) {
         alert('Please sign in before requesting to join.');
       } else {
-        alert('Something went wrong.');
+        alert(error.response?.data?.message || 'Something went wrong.');
       }
     }
   };
