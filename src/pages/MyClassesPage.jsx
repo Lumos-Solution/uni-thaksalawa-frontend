@@ -3,6 +3,7 @@ import maths from "../assets/Card/maths.jpg";
 import {useState} from "react";
 import searchIcon from "../assets/search.png";
 import {addClass} from "../service/MyClassService.js";
+import LocationPicker from "../components/LocationPicker.jsx";
 
 
 
@@ -14,6 +15,7 @@ function MyClassesPage() {
         title: "",
         subject: "",
         location: "",
+        coordinates: null,
         date: "",
         time: "",
         fee: "",
@@ -96,10 +98,11 @@ function MyClassesPage() {
                                     title: "",
                                     subject: "",
                                     location: "",
+                                    coordinates: null,
                                     date: "",
                                     time: "",
                                     fee: "",
-                                    image: null,
+                                    classImage: null,
                                     });
                                 } catch (error) {
                                     alert("Failed to add class. Check the console for details.");
@@ -129,7 +132,13 @@ function MyClassesPage() {
                                         name="classType"
                                         value="online"
                                         checked={formData.classType === "online"}
-                                        onChange={(e) => setFormData({...formData, classType: e.target.value})}
+                                        onChange={(e) => setFormData({
+                                            ...formData,
+                                            classType: e.target.value,
+                                            // An online class has no place - drop anything already picked.
+                                            location: "",
+                                            coordinates: null,
+                                        })}
                                     /> Online
                                 </label>
                             </div>
@@ -157,15 +166,19 @@ function MyClassesPage() {
                                 onChange={(e) => setFormData({...formData, subject: e.target.value})}
                             />
 
-                            <label className="block font-semibold">Location:</label>
-                            <select
-                                className="p-2 border rounded w-full"
-                                value={formData.location}
-                                onChange={(e) => setFormData({...formData, location: e.target.value})}>
-                                {["Colombo", "Gampaha", "Kalutara", "Kandy", "Matale", "Nuwara Eliya", "Galle", "Matara", "Hambantota", "Jaffna", "Kilinochchi", "Mannar", "Vavuniya", "Mullaitivu", "Batticaloa", "Ampara", "Trincomalee", "Kurunegala", "Puttalam", "Anuradhapura", "Polonnaruwa", "Badulla", "Monaragala", "Ratnapura", "Kegalle"].map((district) => (
-                                    <option key={district} value={district}>{district}</option>
-                                ))}
-                            </select>
+                            {/* Only a physical class has somewhere to be. */}
+                            {formData.classType === "physical" && (
+                                <>
+                                    <label className="block font-semibold self-start pt-2">Location:</label>
+                                    <LocationPicker
+                                        location={formData.location}
+                                        coordinates={formData.coordinates}
+                                        onChange={({location, coordinates}) =>
+                                            setFormData((prev) => ({...prev, location, coordinates}))
+                                        }
+                                    />
+                                </>
+                            )}
 
                             <label className="block font-semibold">Date:</label>
                             <input

@@ -20,7 +20,14 @@ export const addClass = async (classData, username) => {
     formData.append("classType", classData.classType);
     formData.append("title", classData.title);
     formData.append("subject", classData.subject);
-    formData.append("location", classData.location);
+
+    // Only a physical class carries a place; an online one sends neither field.
+    if (classData.classType === "physical") {
+      formData.append("location", classData.location);
+      if (classData.coordinates) {
+        formData.append("coordinates", JSON.stringify(classData.coordinates));
+      }
+    }
     formData.append("date", classData.date);
     formData.append("time", classData.time);
     formData.append("fee", classData.fee);
