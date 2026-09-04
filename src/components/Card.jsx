@@ -26,8 +26,20 @@ export const Card = (props) => {
             <h1 className="text-xl font-bold text-gray-800 mb-2">{props.title}</h1>
             <p className="text-gray-600 mb-2">{props.subject}</p>
 
+            {/* Shown where a class is not simply "yours", e.g. a pending request. */}
+            {props.status && (
+                <p className="inline-block text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full mb-2">
+                    {props.status}
+                </p>
+            )}
+
             {showDetails && (
                 <div className="text-sm text-gray-700 space-y-1 mb-3">
+                    {props.teacher && (
+                        <p>
+                            <span className="font-semibold">Teacher:</span> {props.teacher}
+                        </p>
+                    )}
                     {props.classType === "physical" && (
                         <p>
                             <span className="font-semibold">Location:</span> {props.location}
