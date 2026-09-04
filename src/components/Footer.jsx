@@ -27,7 +27,7 @@ const Footer = ({ isLoggedIn }) => {
         <footer className="bg-[#0F172A] text-gray-300 py-6 border-t border-gray-700 mt-auto w-full">
             <div className="container mx-auto px-4 flex flex-col items-center text-sm">
                 <nav aria-label="Footer" className="mb-4 w-full">
-                    <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+                    <ul className="flex flex-col items-center gap-y-2">
                         {tabs.map(({ to, label }) => (
                             <li key={to}>
                                 <Link

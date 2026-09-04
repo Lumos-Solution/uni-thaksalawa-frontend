@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { extractTown, isMapsConfigured, loadGoogleMaps } from "../lib/googleMaps";
+import { SRI_LANKA_TOWNS } from "../lib/sriLankaTowns";
 
 // Centre of Sri Lanka, so the map opens on the whole island.
 const SRI_LANKA_CENTER = { lat: 7.8731, lng: 80.7718 };
@@ -39,7 +40,7 @@ function LocationPicker({ location, coordinates, onChange }) {
             const town = geocodeStatus === "OK" ? extractTown(results[0]) : "";
             placePin(position, town);
             if (!town) {
-                setError("Could not name that spot - type the town below.");
+                setError("Could not name that spot - pick the closest town below.");
             } else {
                 setError("");
             }
@@ -125,13 +126,25 @@ function LocationPicker({ location, coordinates, onChange }) {
         );
     };
 
+    /*
+     * The dropdown lists Sri Lankan towns. A map pin can geocode to a village
+     * that isn't on that list, so fold the current value in when it's missing -
+     * otherwise selecting a pinned spot would blank the field.
+     */
+    const townOptions = useMemo(() => {
+        if (location && !SRI_LANKA_TOWNS.includes(location)) {
+            return [...SRI_LANKA_TOWNS, location].sort((a, b) => a.localeCompare(b));
+        }
+        return SRI_LANKA_TOWNS;
+    }, [location]);
+
     return (
         <div className="w-full">
             {status === "unconfigured" && (
                 <p className="mb-2 rounded border border-amber-300 bg-amber-50 p-2 text-sm text-amber-800">
                     Map picker is off: set <code>VITE_GOOGLE_MAPS_API_KEY</code> in the
                     frontend <code>.env</code> and restart the dev server. You can still
-                    type a town below.
+                    select a town below.
                 </p>
             )}
 
@@ -175,14 +188,19 @@ function LocationPicker({ location, coordinates, onChange }) {
 
             <label className="mt-2 block text-sm text-gray-600">
                 Town
-                <input
-                    type="text"
-                    placeholder="e.g. Matara"
-                    className="mt-1 w-full rounded border p-2"
+                <select
+                    className="mt-1 w-full rounded border bg-white p-2"
                     value={location}
-                    // Typing by hand clears the pin: the text no longer describes it.
+                    // Choosing from the list clears the pin: the name no longer describes it.
                     onChange={(e) => onChange({ location: e.target.value, coordinates: null })}
-                />
+                >
+                    <option value="">Select a town...</option>
+                    {townOptions.map((town) => (
+                        <option key={town} value={town}>
+                            {town}
+                        </option>
+                    ))}
+                </select>
             </label>
 
             {coordinates && (

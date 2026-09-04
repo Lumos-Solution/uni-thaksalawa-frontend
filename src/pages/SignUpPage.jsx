@@ -44,7 +44,12 @@ function Signup() {
       }
     } catch (error) {
       console.error(error);
-      Swal.fire('Error', 'Server Error!', 'error');
+      // Show what the server actually said (e.g. a taken username) instead of a
+      // blanket "Server Error!".
+      const message =
+        error.response?.data?.message ||
+        (error.response ? 'Registration failed!' : 'Cannot reach the server. Is it running?');
+      Swal.fire('Error', message, 'error');
     }
   };
 
