@@ -24,10 +24,10 @@ const Footer = ({ isLoggedIn }) => {
     const tabs = [...publicTabs, ...(isLoggedIn ? memberTabs : guestTabs)];
 
     return (
-        <footer className="bg-[#0F172A] text-gray-300 py-6 border-t border-gray-700 mt-auto w-full">
-            <div className="container mx-auto px-4 flex flex-col items-center text-sm">
-                <nav aria-label="Footer" className="mb-4 w-full">
-                    <ul className="flex flex-col items-center gap-y-2">
+        <footer className="bg-[#0F172A] text-gray-300 py-4 border-t border-gray-700 mt-auto w-full">
+            <div className="container mx-auto px-4 flex flex-col items-center sm:flex-row sm:items-start sm:justify-center gap-x-32 md:gap-x-48 gap-y-4 text-xs">
+                <nav aria-label="Footer">
+                    <ul className="flex flex-col gap-y-1 items-center sm:items-start">
                         {tabs.map(({ to, label }) => (
                             <li key={to}>
                                 <Link
@@ -41,18 +41,12 @@ const Footer = ({ isLoggedIn }) => {
                     </ul>
                 </nav>
 
-                <div className="w-full border-t border-gray-700 mb-4" />
-
-                <div className="text-center mb-4">
+                <div className="flex flex-col gap-y-1 items-center sm:items-start">
                     <p className="font-semibold text-white">© {new Date().getFullYear()} Uni-තක්සලාව</p>
                     <p className="text-gray-400">Developed by Lumos Solutions</p>
-                </div>
-
-                <div className="flex space-x-4">
                     <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors duration-200">
                         Privacy Policy
                     </Link>
-                    <span className="text-gray-500">|</span>
                     <Link to="/terms" className="text-gray-400 hover:text-white transition-colors duration-200">
                         Terms of Service
                     </Link>
