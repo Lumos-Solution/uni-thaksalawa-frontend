@@ -295,11 +295,11 @@ function MyClassesPage() {
                             />
 
                             <div className="flex mt-4 w-full gap-8">
-                                <button type="button" onClick={closeModal}
-                                        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 flex-1">Cancel
-                                </button>
                                 <button type="submit"
                                         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex-1 whitespace-nowrap">{editingClassId ? "Save Changes" : "Submit"}
+                                </button>
+                                <button type="button" onClick={closeModal}
+                                        className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 flex-1">Cancel
                                 </button>
                             </div>
 
