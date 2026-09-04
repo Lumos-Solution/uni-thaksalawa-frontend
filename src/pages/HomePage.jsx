@@ -138,8 +138,9 @@ const HomePage = () => {
                 <h3 className="text-2xl font-semibold mb-3">Best Teachers</h3>
                 <p className="text-lg">Top-rated, qualified tutors ready to help you succeed.</p>
                 <img
-                  src="https://th.bing.com/th/id/OIP.2Ecc2kJaDoiau98cs8wETgHaE8?cb=iwc2&rs=1&pid=ImgDetMain"
+                  src="/best_teachers.png"
                   alt="teacher"
+                  className="mt-4 w-full aspect-square object-contain bg-white rounded-lg"
                 />
               </div>
               <div className="p-6 bg-blue-100 rounded-lg shadow-lg hover:shadow-xl transition">
