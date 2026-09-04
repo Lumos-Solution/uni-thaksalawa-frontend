@@ -17,11 +17,15 @@ const JOIN_STATUS_LABEL = {
     pending: 'Request Pending',
 };
 
-const ClassCard = ({ classData, onEnroll, distanceKm, joinStatus }) => {
+const ClassCard = ({ classData, onEnroll, distanceKm, joinStatus, isOwnClass }) => {
     const { title, subject, teacherName, classImage, classType, location, date, time, fee } =
         classData;
 
     const image = imageUrl(classImage);
+
+    // A teacher browsing the class list still sees their own classes, but they
+    // are not something to join.
+    const disabled = isOwnClass || Boolean(joinStatus);
 
     return (
         <div className="bg-white p-4 rounded shadow-lg hover:shadow-2xl transition-shadow duration-300">
@@ -37,28 +41,28 @@ const ClassCard = ({ classData, onEnroll, distanceKm, joinStatus }) => {
             </div>
 
             <p className="text-sm text-gray-600">{subject}</p>
-            {teacherName && <p className="text-sm text-gray-600">👤 {teacherName}</p>}
-            {location && <p className="text-sm text-gray-600">📍 {location}</p>}
+            {teacherName && <p className="text-sm text-gray-600">&#128100; {teacherName}</p>}
+            {location && <p className="text-sm text-gray-600">&#128205; {location}</p>}
             {typeof distanceKm === 'number' && (
                 <p className="text-sm font-medium text-emerald-700">
                     ~{distanceKm.toFixed(1)} km away
                 </p>
             )}
             <p className="text-sm text-gray-500 mt-2">
-                {date} · {time}
+                {date} &middot; {time}
             </p>
             <p className="text-sm text-gray-700 font-medium">Fee: Rs. {fee}</p>
 
             <button
                 onClick={() => onEnroll(classData)}
-                disabled={Boolean(joinStatus)}
+                disabled={disabled}
                 className={`mt-4 px-4 py-2 rounded text-white ${
-                    joinStatus
-                        ? 'bg-gray-400 cursor-not-allowed'
-                        : 'bg-blue-500 hover:bg-blue-600'
+                    disabled ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
                 }`}
             >
-                {JOIN_STATUS_LABEL[joinStatus] || 'Request to Join'}
+                {isOwnClass
+                    ? 'You Created'
+                    : JOIN_STATUS_LABEL[joinStatus] || 'Request to Join'}
             </button>
         </div>
     );

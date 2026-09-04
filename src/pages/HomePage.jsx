@@ -4,6 +4,7 @@ import ClassCard from '../components/ClassCard';
 import api from '../auth/apiClient';
 import { getCurrentUserName } from '../auth/tokenStorage';
 import { getMyEnrollments } from '../service/MyEnrollmentService';
+import { getClassesByUsername } from '../service/MyClassService';
 import { DEFAULT_DISTANCE_KM, DISTANCE_OPTIONS, distanceInKm } from '../lib/distance';
 
 const HomePage = () => {
@@ -20,6 +21,10 @@ const HomePage = () => {
   // classId -> "approved" | "pending", so a class the student already has is
   // not offered again.
   const [joinStatuses, setJoinStatuses] = useState({});
+
+  // The classIds this user teaches, so their own class is never offered back to
+  // them as something to join.
+  const [ownClassIds, setOwnClassIds] = useState([]);
 
   const [userLocation, setUserLocation] = useState(null);
   const [locationError, setLocationError] = useState('');
@@ -44,6 +49,16 @@ const HomePage = () => {
         setJoinStatuses(statuses);
       })
       .catch((error) => console.error('Could not read your enrollments:', error));
+  }, []);
+
+  // A student teaches nothing, so an empty list here is the normal case.
+  useEffect(() => {
+    const username = getCurrentUserName();
+    if (!username) return;
+
+    getClassesByUsername(username)
+      .then((myClasses) => setOwnClassIds(myClasses.map((cls) => cls.classId)))
+      .catch((error) => console.error('Could not read your own classes:', error));
   }, []);
 
   // Asked for once on load so the radius filter has something to measure from.
@@ -235,6 +250,7 @@ const HomePage = () => {
                   classData={cls}
                   distanceKm={classMode === 'physical' ? distanceKm : null}
                   joinStatus={joinStatuses[cls.classId]}
+                  isOwnClass={ownClassIds.includes(cls.classId)}
                   onEnroll={handleEnroll}
                 />
               ))
