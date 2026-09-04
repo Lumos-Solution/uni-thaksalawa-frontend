@@ -7,10 +7,9 @@ export const getClassesByUsername = async (username) => {
   return response.data;
 };
 
-// Function to add a class
-export const addClass = async (classData, username) => {
-  const studentIds = [];
-
+// The class fields shared by adding and editing. The image is only appended
+// when one was chosen, so an edit without a new file keeps the current picture.
+const toFormData = (classData) => {
   const formData = new FormData();
   formData.append("classType", classData.classType);
   formData.append("title", classData.title);
@@ -29,14 +28,28 @@ export const addClass = async (classData, username) => {
   if (classData.classImage) {
     formData.append("classImage", classData.classImage);
   }
-  formData.append("studentIDs", JSON.stringify(studentIds));
+
+  return formData;
+};
+
+const MULTIPART = { headers: { "Content-Type": "multipart/form-data" } };
+
+// Function to add a class
+export const addClass = async (classData, username) => {
+  const formData = toFormData(classData);
+  formData.append("studentIDs", JSON.stringify([]));
   formData.append("teacherID", username);
 
-  const response = await api.post("/api/class/add", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const response = await api.post("/api/class/add", formData, MULTIPART);
+  return response.data;
+};
 
+// Editing is refused by the server once the class start date has passed.
+export const updateClass = async (classId, classData) => {
+  const response = await api.put(
+    `/api/class/update/${classId}`,
+    toFormData(classData),
+    MULTIPART
+  );
   return response.data;
 };

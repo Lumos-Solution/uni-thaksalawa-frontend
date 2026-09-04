@@ -2,7 +2,7 @@ import {Card} from "../components/Card.jsx";
 import maths from "../assets/Card/maths.jpg";
 import {useEffect, useState} from "react";
 import searchIcon from "../assets/search.png";
-import {addClass, getClassesByUsername} from "../service/MyClassService.js";
+import {addClass, getClassesByUsername, updateClass} from "../service/MyClassService.js";
 import {getCurrentUserName} from "../auth/tokenStorage.js";
 import LocationPicker from "../components/LocationPicker.jsx";
 
@@ -10,8 +10,7 @@ import LocationPicker from "../components/LocationPicker.jsx";
 
 function MyClassesPage() {
 
-    const [showModal, setShowModal] = useState(false);
-    const [formData, setFormData] = useState({
+    const EMPTY_FORM = {
         classType: "physical",
         title: "",
         subject: "",
@@ -21,7 +20,14 @@ function MyClassesPage() {
         time: "",
         fee: "",
         classImage: null,
-    });
+    };
+
+    const [showModal, setShowModal] = useState(false);
+    const [formData, setFormData] = useState(EMPTY_FORM);
+
+    // The classId being edited, or null while a new class is being added. The
+    // same modal serves both.
+    const [editingClassId, setEditingClassId] = useState(null);
 
 
     const [classes, setClasses] = useState([]);
@@ -55,6 +61,42 @@ function MyClassesPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [username]);
 
+    /*
+     * A class may only be edited while it is still upcoming; once its start date
+     * has arrived the students have planned around the details. The server
+     * enforces this too - this only keeps the button off the card.
+     */
+    const isUpcoming = (date) => !date || date >= new Date().toISOString().slice(0, 10);
+
+    const openAddModal = () => {
+        setEditingClassId(null);
+        setFormData(EMPTY_FORM);
+        setShowModal(true);
+    };
+
+    const openEditModal = (classItem) => {
+        setEditingClassId(classItem.classId);
+        setFormData({
+            classType: classItem.classType,
+            title: classItem.title,
+            subject: classItem.subject,
+            location: classItem.location || "",
+            coordinates: classItem.coordinates || null,
+            date: classItem.date,
+            time: classItem.time,
+            fee: classItem.fee,
+            // Left empty so the class keeps its picture unless a new one is picked.
+            classImage: null,
+        });
+        setShowModal(true);
+    };
+
+    const closeModal = () => {
+        setShowModal(false);
+        setEditingClassId(null);
+        setFormData(EMPTY_FORM);
+    };
+
     const visibleClasses = classes.filter((classItem) => {
         const term = search.trim().toLowerCase();
         if (!term) return true;
@@ -72,7 +114,7 @@ function MyClassesPage() {
                 <h2 className="text-2xl font-bold text-center w-full">My Classes</h2>
                 <div className="absolute right-6">
                     <button
-                        onClick={() => setShowModal(true)}
+                        onClick={openAddModal}
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                     >
                         Add Class
@@ -101,7 +143,9 @@ function MyClassesPage() {
             {showModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 mt-28">
                     <div className="bg-white p-6 rounded shadow-lg w-[550px]">
-                        <h3 className="text-lg font-bold mb-4">Add New Class</h3>
+                        <h3 className="text-lg font-bold mb-4">
+                            {editingClassId ? "Edit Class" : "Add New Class"}
+                        </h3>
 
                         <form
                             // onSubmit={(e) => {                                                                                                      //when u click submit button, run this function
@@ -128,28 +172,22 @@ function MyClassesPage() {
                                 e.preventDefault();
 
                                 try {
-                                    await addClass(formData, username);
+                                    if (editingClassId) {
+                                        await updateClass(editingClassId, formData);
+                                    } else {
+                                        await addClass(formData, username);
+                                    }
 
-                                    // Re-read the list so the new class is shown
+                                    // Re-read the list so the class is shown
                                     // exactly as the server stored it.
                                     await loadClasses();
-
-                                    // Reset modal and form
-                                    setShowModal(false);
-                                    setFormData({
-                                    classType: "physical",
-                                    title: "",
-                                    subject: "",
-                                    location: "",
-                                    coordinates: null,
-                                    date: "",
-                                    time: "",
-                                    fee: "",
-                                    classImage: null,
-                                    });
+                                    closeModal();
                                 } catch (error) {
-                                    alert("Failed to add class. Check the console for details.");
                                     console.error("Error submitting class:", error);
+                                    alert(
+                                        error.response?.data?.message ||
+                                        "Failed to save the class. Check the console for details."
+                                    );
                                 }
                             }}
 
@@ -223,7 +261,7 @@ function MyClassesPage() {
                                 </>
                             )}
 
-                            <label className="block font-semibold">Date:</label>
+                            <label className="block font-semibold">Start Date:</label>
                             <input
                                 type="date"
                                 className="p-2 border rounded w-full"
@@ -257,11 +295,11 @@ function MyClassesPage() {
                             />
 
                             <div className="flex mt-4 w-full gap-8">
-                                <button type="button" onClick={() => setShowModal(false)}
+                                <button type="button" onClick={closeModal}
                                         className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 flex-1">Cancel
                                 </button>
                                 <button type="submit"
-                                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex-1">Submit
+                                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 flex-1 whitespace-nowrap">{editingClassId ? "Save Changes" : "Submit"}
                                 </button>
                             </div>
 
@@ -290,7 +328,11 @@ function MyClassesPage() {
                         date={classItem.date}
                         time={classItem.time}
                         fee={classItem.fee}
-                        link="#"
+                        onEdit={
+                            isUpcoming(classItem.date)
+                                ? () => openEditModal(classItem)
+                                : undefined
+                        }
                     />
                 ))}
             </div>
