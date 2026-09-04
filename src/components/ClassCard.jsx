@@ -10,7 +10,14 @@ const imageUrl = (classImage) => {
         : `${API_BASE_URL}/uploads/classImages/${classImage}`;
 };
 
-const ClassCard = ({ classData, onEnroll, distanceKm }) => {
+// What the button says once the student already has a row for this class, so a
+// second request cannot be sent by mistake.
+const JOIN_STATUS_LABEL = {
+    approved: 'Already Joined',
+    pending: 'Request Pending',
+};
+
+const ClassCard = ({ classData, onEnroll, distanceKm, joinStatus }) => {
     const { title, subject, teacherName, classImage, classType, location, date, time, fee } =
         classData;
 
@@ -44,9 +51,14 @@ const ClassCard = ({ classData, onEnroll, distanceKm }) => {
 
             <button
                 onClick={() => onEnroll(classData)}
-                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                disabled={Boolean(joinStatus)}
+                className={`mt-4 px-4 py-2 rounded text-white ${
+                    joinStatus
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-blue-500 hover:bg-blue-600'
+                }`}
             >
-                Request to Join
+                {JOIN_STATUS_LABEL[joinStatus] || 'Request to Join'}
             </button>
         </div>
     );

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { fetchClasses } from '../api/classApi';
 import ClassCard from '../components/ClassCard';
 import api from '../auth/apiClient';
+import { getCurrentUserName } from '../auth/tokenStorage';
+import { getMyEnrollments } from '../service/MyEnrollmentService';
 import { DEFAULT_DISTANCE_KM, DISTANCE_OPTIONS, distanceInKm } from '../lib/distance';
 
 const HomePage = () => {
@@ -15,6 +17,10 @@ const HomePage = () => {
   const [classMode, setClassMode] = useState('physical');
   const [maxDistanceKm, setMaxDistanceKm] = useState(DEFAULT_DISTANCE_KM);
 
+  // classId -> "approved" | "pending", so a class the student already has is
+  // not offered again.
+  const [joinStatuses, setJoinStatuses] = useState({});
+
   const [userLocation, setUserLocation] = useState(null);
   const [locationError, setLocationError] = useState('');
   const [showClasses, setShowClasses] = useState(false);
@@ -23,6 +29,21 @@ const HomePage = () => {
     fetchClasses()
       .then(setClasses)
       .catch((error) => console.error('Error fetching classes:', error));
+  }, []);
+
+  // A signed-out visitor can browse, so a failure here is not worth reporting -
+  // every class simply stays open to request.
+  useEffect(() => {
+    if (!getCurrentUserName()) return;
+
+    getMyEnrollments()
+      .then(({ approved, pending }) => {
+        const statuses = {};
+        approved.forEach((cls) => (statuses[cls.classId] = 'approved'));
+        pending.forEach((cls) => (statuses[cls.classId] = 'pending'));
+        setJoinStatuses(statuses);
+      })
+      .catch((error) => console.error('Could not read your enrollments:', error));
   }, []);
 
   // Asked for once on load so the radius filter has something to measure from.
@@ -80,6 +101,7 @@ const HomePage = () => {
     try {
       // The server takes the student from the token, so only the class is sent.
       await api.post('/api/userClassDetails/add', { classId: classData.classId });
+      setJoinStatuses((current) => ({ ...current, [classData.classId]: 'pending' }));
       alert('Request sent. The teacher will approve or decline it.');
     } catch (error) {
       console.error('Error requesting to join:', error);
@@ -211,6 +233,7 @@ const HomePage = () => {
                   key={cls.classId}
                   classData={cls}
                   distanceKm={classMode === 'physical' ? distanceKm : null}
+                  joinStatus={joinStatuses[cls.classId]}
                   onEnroll={handleEnroll}
                 />
               ))
