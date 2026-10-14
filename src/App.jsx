@@ -1,5 +1,5 @@
 import {BrowserRouter as Router, Routes, Route, Navigate, Outlet} from "react-router-dom";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import HomePage from "./pages/HomePage.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import SignInPage from "./pages/SignInPage.jsx";
@@ -11,6 +11,8 @@ import NotificationPage from "./pages/NotificationPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Footer from "./components/Footer.jsx";
 import { hasValidSession } from "./auth/tokenStorage.js";
+import { useNotificationSocket } from "./socket/useNotificationSocket.js";
+import { socket } from "./socket/socket.js";
 
 function App() {
 
@@ -22,9 +24,21 @@ function App() {
         localStorage.setItem("isLoggedIn", isLoggedIn.toString());
     }, [isLoggedIn]);
 
+    // Whenever the user ends up logged out, make sure no socket stays open.
+    useEffect(() => {
+        if (!isLoggedIn) socket.disconnect();
+    }, [isLoggedIn]);
+
     const ProtectedRoute = ({children}) => {
         return isLoggedIn ? children : <Navigate to="/login"/>;
     };
+
+    const handleDecided = useCallback((d) => {
+        alert(d.approved ? 'Your request was accepted!' : 'Your request was declined');
+    }, []);
+
+    // Only connect (and listen) while a session exists.
+    useNotificationSocket({ onRequestDecided: handleDecided, enabled: isLoggedIn });
 
     const UserLayout = () => (
         <div className="flex flex-col min-h-screen">

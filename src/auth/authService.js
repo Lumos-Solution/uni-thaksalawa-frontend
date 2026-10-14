@@ -1,6 +1,7 @@
 import axios from 'axios';
 import api, { API_BASE_URL } from './apiClient';
 import { clearSession, saveSession } from './tokenStorage';
+import {socket} from "../socket/socket.js";
 
 /** Signs in and stores the returned JWT pair. Returns the user summary from the server. */
 export const signIn = async (credentials) => {
@@ -17,7 +18,9 @@ export const signUp = async (formData) => {
     return data;
 };
 
-export const signOut = () => clearSession();
+export const signOut = () => {
+    socket.disconnect();
+    clearSession()};
 
 /** Fetches the signed-in user straight from the token, no username guessing needed. */
 export const fetchMe = async () => {

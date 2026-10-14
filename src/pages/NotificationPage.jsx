@@ -1,21 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import NotificationCard from '../components/NotificationCard';
 import { fetchNotifications } from '../service/NotificationService';
+import { useNotificationSocket } from '../socket/useNotificationSocket';
 
 function NotificationPage() {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        fetchNotifications()
+    const loadNotifications = useCallback(() => {
+        return fetchNotifications()
             .then(setNotifications)
             .catch((err) => {
                 console.error(err);
                 setError('Failed to load notifications');
-            })
-            .finally(() => setLoading(false));
+            });
     }, []);
+
+    useEffect(() => {
+        loadNotifications().finally(() => setLoading(false));
+    }, [loadNotifications]);
+
+    // Real-time: a student just requested to join one of this teacher's classes.
+    // Refetching (instead of pushing the event data into state) keeps the list
+    // identical to what the server returns, including student and class details.
+    useNotificationSocket({ onJoinRequest: loadNotifications });
 
     // An answered request is gone from the server, so it is dropped from the list.
     const removeAnswered = (userName, classId) => {
