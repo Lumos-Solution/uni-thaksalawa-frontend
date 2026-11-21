@@ -129,53 +129,75 @@ const HomePage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 mt-28">
+    // The illustration keeps its artwork at the edges, so the content column sits
+    // over the clear centre. bg-fixed keeps it still while the class list scrolls.
+    <div
+      className="min-h-screen bg-cover bg-center bg-no-repeat md:bg-fixed"
+      style={{ backgroundImage: "url('/home-bg.png')" }}
+    >
+    <div className="container mx-auto px-4 pt-28 pb-16">
       {!showClasses && (
         <>
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Find Your Tutor</h1>
-            <p className="text-lg mb-6">
+          <section className="text-center max-w-3xl mx-auto pt-8 md:pt-16 mb-16">
+            <span className="inline-block mb-4 px-4 py-1 rounded-full bg-white/70 backdrop-blur text-indigo-700 text-sm font-medium shadow-sm">
+              Physical &amp; online classes across Sri Lanka
+            </span>
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-5">
+              Find Your{' '}
+              <span className="bg-gradient-to-r from-indigo-600 to-blue-500 bg-clip-text text-transparent">
+                Tutor
+              </span>
+            </h1>
+            <p className="text-lg md:text-xl text-slate-600 mb-8">
               Find the best tutors in any subject at your convenience. Choose from a variety of
               experienced teachers.
             </p>
             <button
               onClick={() => setShowClasses(true)}
-              className="bg-blue-500 text-white py-3 px-8 rounded-full text-2xl hover:bg-blue-600 transition"
+              className="bg-indigo-600 text-white py-3 px-10 rounded-full text-xl font-semibold shadow-lg shadow-indigo-500/30 hover:bg-indigo-700 hover:-translate-y-0.5 transition"
             >
               Find Your Tutor
             </button>
-          </div>
+          </section>
 
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-semibold mb-4">Why Choose Uni Thaksalawa?</h2>
+          <section className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900 mb-8">Why Choose Uni Thaksalawa?</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="p-6 bg-blue-100 rounded-lg shadow-lg hover:shadow-xl transition">
-                <h3 className="text-2xl font-semibold mb-3">Best Teachers</h3>
-                <p className="text-lg">Top-rated, qualified tutors ready to help you succeed.</p>
-                <img
-                  src="/best_teachers.png"
-                  alt="teacher"
-                  className="mt-4 w-full aspect-square object-contain bg-white rounded-lg"
-                />
-              </div>
-              <div className="p-6 bg-blue-100 rounded-lg shadow-lg hover:shadow-xl transition">
-                <h3 className="text-2xl font-semibold mb-3">Any Subject</h3>
-                <p className="text-lg">From Math to Languages, we have tutors for every subject!</p>
-                <img
-                  src="https://th.bing.com/th/id/OIP.9sCiEYWxpuhY5wsIW7lNAQHaHa?cb=iwc2&rs=1&pid=ImgDetMain"
-                  alt="subject"
-                />
-              </div>
-              <div className="p-6 bg-blue-100 rounded-lg shadow-lg hover:shadow-xl transition">
-                <h3 className="text-2xl font-semibold mb-3">Close To You</h3>
-                <p className="text-lg">See the physical classes held within a few km of you.</p>
-                <img
-                  src="https://th.bing.com/th/id/OIP.zOiuj5M6kYytp1a2_4jXkgHaHa?cb=iwc2&rs=1&pid=ImgDetMain"
-                  alt="nearby"
-                />
-              </div>
+              {[
+                {
+                  title: 'Best Teachers',
+                  text: 'Top-rated, qualified tutors ready to help you succeed.',
+                  img: '/best_teachers.png',
+                  alt: 'teacher',
+                },
+                {
+                  title: 'Any Subject',
+                  text: 'From Math to Languages, we have tutors for every subject!',
+                  img: 'https://th.bing.com/th/id/OIP.9sCiEYWxpuhY5wsIW7lNAQHaHa?cb=iwc2&rs=1&pid=ImgDetMain',
+                  alt: 'subject',
+                },
+                {
+                  title: 'Close To You',
+                  text: 'See the physical classes held within a few km of you.',
+                  img: 'https://th.bing.com/th/id/OIP.zOiuj5M6kYytp1a2_4jXkgHaHa?cb=iwc2&rs=1&pid=ImgDetMain',
+                  alt: 'nearby',
+                },
+              ].map((feature) => (
+                <div
+                  key={feature.title}
+                  className="p-6 bg-white/75 backdrop-blur-md border border-white/60 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition duration-300"
+                >
+                  <h3 className="text-2xl font-semibold text-indigo-900 mb-3">{feature.title}</h3>
+                  <p className="text-lg text-slate-600">{feature.text}</p>
+                  <img
+                    src={feature.img}
+                    alt={feature.alt}
+                    className="mt-4 w-full aspect-square object-contain bg-white rounded-xl"
+                  />
+                </div>
+              ))}
             </div>
-          </div>
+          </section>
         </>
       )}
 
@@ -186,10 +208,10 @@ const HomePage = () => {
               <button
                 key={mode}
                 onClick={() => setClassMode(mode)}
-                className={`px-6 py-2 rounded-full capitalize transition ${
+                className={`px-6 py-2 rounded-full capitalize font-medium shadow-sm transition ${
                   classMode === mode
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-white/80 backdrop-blur text-slate-700 hover:bg-white'
                 }`}
               >
                 {mode}
@@ -197,34 +219,34 @@ const HomePage = () => {
             ))}
           </div>
 
-          <div className="flex gap-4 justify-center mb-2 flex-wrap">
+          <div className="flex gap-3 justify-center mb-2 flex-wrap p-4 mx-auto max-w-4xl bg-white/70 backdrop-blur-md rounded-2xl shadow-md">
             <input
               type="text"
               placeholder="Filter by subject"
               value={subjectFilter}
               onChange={(e) => setSubjectFilter(e.target.value)}
-              className="p-2 border rounded"
+              className="p-2 border border-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
             <input
               type="text"
               placeholder="Filter by teacher"
               value={teacherFilter}
               onChange={(e) => setTeacherFilter(e.target.value)}
-              className="p-2 border rounded"
+              className="p-2 border border-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
             <input
               type="text"
               placeholder="Filter by title"
               value={titleFilter}
               onChange={(e) => setTitleFilter(e.target.value)}
-              className="p-2 border rounded"
+              className="p-2 border border-indigo-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
 
             {classMode === 'physical' && (
               <select
                 value={maxDistanceKm}
                 onChange={(e) => setMaxDistanceKm(Number(e.target.value))}
-                className="p-2 border rounded"
+                className="p-2 border border-indigo-100 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 disabled={!userLocation}
               >
                 {DISTANCE_OPTIONS.map((km) => (
@@ -255,11 +277,14 @@ const HomePage = () => {
                 />
               ))
             ) : (
-              <p>No classes available matching your filters.</p>
+              <p className="col-span-full text-center text-slate-600 bg-white/70 backdrop-blur rounded-xl py-8">
+                No classes available matching your filters.
+              </p>
             )}
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };
